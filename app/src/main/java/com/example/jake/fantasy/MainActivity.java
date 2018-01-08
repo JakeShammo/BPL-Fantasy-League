@@ -1,6 +1,7 @@
 package com.example.jake.fantasy;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView tv1,tv2;
     Typeface tf1;
-    Button signIn;
+    Button signIn, createA;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +31,24 @@ public class MainActivity extends AppCompatActivity {
         tv1.setTypeface(tf1);
         tv2.setTypeface(tf1);
         signIn = findViewById(R.id.button);
+        createA = findViewById(R.id.button2);
+        //signIn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         signIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                //signIn.setBackgroundColor(Color.GRAY);
                 startActivity(new Intent(MainActivity.this, SignInActivity.class));
+
+            }
+        });
+
+        createA.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //signIn.setBackgroundColor(Color.GRAY);
+                startActivity(new Intent(MainActivity.this, WelcomeActiviy.class));
 
             }
         });

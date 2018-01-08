@@ -23,7 +23,7 @@
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="BPL Fantasy League">
+            app:title="BPL FANTASY LEAGUE">
 
         </android.support.v7.widget.Toolbar>
 

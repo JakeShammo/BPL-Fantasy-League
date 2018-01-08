@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "282401979451",
+    "firebase_url": "https://fantasy-970b6.firebaseio.com",
+    "project_id": "fantasy-970b6",
+    "storage_bucket": "fantasy-970b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282401979451:android:008f8fe9757e2fca",
+        "android_client_info": {
+          "package_name": "com.example.jake.fantasy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282401979451-th0jn169u8l0c0otn3pf6d9ibk9gala8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJwCYFrC522a8yqcF8TvRXwI639BZTD28"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

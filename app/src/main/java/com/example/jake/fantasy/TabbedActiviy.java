@@ -1,5 +1,6 @@
 package com.example.jake.fantasy;
 
+import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +41,7 @@ public class TabbedActiviy extends AppCompatActivity {
     //private static final TAG = "TabbedActivity";
     private ViewPager mViewPager;
     private SectionPageAdapter mSectionPageAdapter;
-
+    private Typeface tf1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +50,25 @@ public class TabbedActiviy extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
+        tf1 = Typeface.createFromAsset(getAssets(),  "abc.ttf");
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar.setTitle("BPL FANTASY LEAGUE");
+        setSupportActionBar(toolbar);
+        TextView toolbarTitle = null;
+        for (int i = 0; i < toolbar.getChildCount(); ++i) {
+            View child = toolbar.getChildAt(i);
+
+            // assuming that the title is the first instance of TextView
+            // you can also check if the title string matches
+            if (child instanceof TextView) {
+                toolbarTitle = (TextView)child;
+                break;
+            }
+        }
+        toolbarTitle.setTypeface(tf1);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
        /* mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
