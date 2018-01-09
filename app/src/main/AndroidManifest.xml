@@ -22,6 +22,7 @@
             android:label="@string/title_activity_tabbed_activiy"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".WelcomeActiviy"></activity>
+        <activity android:name=".CreateAccountActivity"></activity>
     </application>
 
 </manifest>
