@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //signIn.setBackgroundColor(Color.GRAY);
-                startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                startActivity(new Intent(MainActivity.this, CreatingTeam1.class));
 
             }
         });

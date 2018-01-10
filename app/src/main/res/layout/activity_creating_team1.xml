@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     tools:context="com.example.jake.fantasy.CreatingTeam1">
 
@@ -17,10 +17,12 @@
         android:textSize="30dp" />
 
     <EditText
+        android:id="@+id/teamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:hint="Team Name"/>
+        android:hint="Team Name" />
+
     <TextView
         android:id="@+id/teammotto"
         android:layout_width="176dp"
@@ -32,10 +34,11 @@
         android:textSize="30dp" />
 
     <EditText
+        android:id="@+id/teamMotto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
-        android:hint="Team Motto"/>
+        android:hint="Team Motto" />
 
     <TextView
         android:id="@+id/teamform"
@@ -51,7 +54,7 @@
         android:id="@+id/batsmen"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="280dp"
         android:layout_weight="1"
         android:text="Batsmen:"
         android:textColor="#000"
@@ -61,7 +64,7 @@
         android:id="@+id/allrounder"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="330dp"
         android:layout_weight="1"
         android:text="All Rounder:"
         android:textColor="#000"
@@ -71,7 +74,7 @@
         android:id="@+id/wktkeeper"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="380dp"
         android:layout_weight="1"
         android:text="Wicket Keeper:"
         android:textColor="#000"
@@ -81,9 +84,60 @@
         android:id="@+id/bowler"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="390dp"
+        android:layout_marginTop="430dp"
         android:layout_weight="1"
         android:text="Team Formation:"
         android:textColor="#000"
         android:textSize="25dp" />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/spinnerBat"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+         android:layout_marginTop="270dp"
+        android:hint="4"
+        android:textColorHint="#000"
+        android:textSize="20dp" />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/spinnerAll"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="320dp"
+        android:hint="3"
+        android:textColorHint="#000"
+        android:textSize="20dp" />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/spinnerWkt"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="370dp"
+        android:hint="1"
+        android:textColorHint="#000"
+        android:textSize="20dp" />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/spinnerBol"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="420dp"
+        android:hint="3"
+        android:textColorHint="#000"
+        android:textSize="20dp" />
+    <Button
+        android:id="@+id/selectSquad"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="500dp"
+        android:text="Move to Select Squad"
+        android:textSize="20dp"
+        android:textColor="#FFF"
+        android:background="@color/colorPrimaryDark"/>
+
 </RelativeLayout>
