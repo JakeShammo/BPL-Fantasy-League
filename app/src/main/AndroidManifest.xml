@@ -25,7 +25,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".WelcomeActiviy" />
         <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".CreatingTeam1"></activity>
+        <activity android:name=".CreatingTeam1" />
+
+        <activity android:name=".PlayerList" />
     </application>
 
 </manifest>
