@@ -81,17 +81,18 @@ public class CreatingTeam1 extends AppCompatActivity {
                 dref= FirebaseDatabase.getInstance().getReference();
                 dref = dref.child("USERS").child(userId);
                 dref.child("Batsmen").setValue(Integer.toString(bat));
-                dref.child("Bowler").setValue(Integer.toString(bat));
-                dref.child("Allrounder").setValue(Integer.toString(bat));
-                dref.child("WktKeeper").setValue(Integer.toString(bat));
+                dref.child("Bowler").setValue(Integer.toString(bol));
+                dref.child("Allrounder").setValue(Integer.toString(all));
+                dref.child("WktKeeper").setValue(Integer.toString(wkt));
                 dref.child("TeamName").setValue(name);
                 dref.child("TeamMotto").setValue(motto);
                 dref.child("BatsmenSel").setValue(Integer.toString(0));
                 dref.child("BowlerSel").setValue(Integer.toString(0));
                 dref.child("AllrounderSel").setValue(Integer.toString(0));
                 dref.child("WktKeeperSel").setValue(Integer.toString(0));
-                startActivity(new Intent(CreatingTeam1.this, MainActivity.class));
-
+                Intent startIntent = new Intent(CreatingTeam1.this,CreatingTeam2.class);
+                startIntent.putExtra("userId",userId);
+                startActivity(startIntent);
 
 
             }

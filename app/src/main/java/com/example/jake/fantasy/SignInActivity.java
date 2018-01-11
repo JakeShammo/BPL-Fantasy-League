@@ -1,29 +1,162 @@
 package com.example.jake.fantasy;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity {
 
 
     Button signIn;
+    EditText mEmailField,mPasswordField;
+
+    public ProgressDialog mProgressDialog;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        mEmailField = findViewById(R.id.nameinp);
+        mPasswordField = findViewById(R.id.editText2);
+        mAuth = FirebaseAuth.getInstance();
         signIn = findViewById(R.id.button3);
+        mEmailField.setText("singulaity.bhole@gmail.com");
+        mPasswordField.setText("123456");
         signIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SignInActivity.this, TabbedActiviy.class));
-            }
+                //Log.d(TAG, "signIn:" + email);
+                if (!validateForm()) {
+                    return;
+                }
+                showProgressDialog();
+                String email = mEmailField.getText().toString();
+                String password = mPasswordField.getText().toString();
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    //Log.d(TAG, "signInWithEmail:success");
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    final String userId=user.getUid();
+                                    Toast.makeText(SignInActivity.this,"Signed In",Toast.LENGTH_SHORT).show();
+                                    final DatabaseReference db= FirebaseDatabase.getInstance().getReference("USERS/"+userId).child("TotalSelected");
+                                    db.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            int total = Integer.parseInt(dataSnapshot.getValue().toString());
+                                            if (total==11){
+                                                Intent startIntent = new Intent(SignInActivity.this,TabbedActiviy.class);
+                                                startIntent.putExtra("userId",userId);
+                                                startActivity(startIntent);
+                                        /*---you might want to call finish() method here but never do that
+                                        ----call finish() method from outside the listener---
+                                         */
+                                            }
+                                            else{
+                                                Intent startIntent = new Intent(SignInActivity.this,CreatingTeam2.class);
+                                                startIntent.putExtra("userId",userId);
+                                                startActivity(startIntent);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                    finish();
+                                }
+                                else {
+                                   // Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    Toast.makeText(SignInActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                   // updateUI(null);
+                                }
+                                if (!task.isSuccessful()) {
+
+                                    Toast.makeText(SignInActivity.this,"Autehentication Failed.",Toast.LENGTH_SHORT);
+
+                                }
+
+                                hideProgressDialog();
+                            }
+
+                        });}
         });
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Required.");
+            valid = false;
+        }
+        else {
+            mEmailField.setError(null);
+        }
+        String password = mPasswordField.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mPasswordField.setError("Required.");
+            valid = false;
+        }
+        else {
+            mPasswordField.setError(null);
+        }
+        return valid;
+    }
+    public void showProgressDialog() {
+
+        if (mProgressDialog == null) {
+
+            mProgressDialog = new ProgressDialog(this);
+
+            mProgressDialog.setMessage("Loading");
+
+            mProgressDialog.setIndeterminate(true);
+
+        }
+
+
+
+        mProgressDialog.show();
+
+    }
+
+
+
+    public void hideProgressDialog() {
+
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+
+            mProgressDialog.dismiss();
+
+        }
+
     }
 }

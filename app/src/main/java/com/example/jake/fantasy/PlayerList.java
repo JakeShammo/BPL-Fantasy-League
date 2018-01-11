@@ -68,29 +68,14 @@ public class PlayerList extends AppCompatActivity {
                 for(int i=0;i<=165;i++){
                     DataSnapshot ds = dataSnapshot.child(Integer.toString(i));
                     Players player = new Players();
-
-                   // Log.d(TAG, "Dhuke2");
                     player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
-
                     player.setCountry((String)ds.child("Country").getValue());
-
-                   // Log.d(TAG, player.getCountry());
                     player.setName((String)ds.child("Name").getValue());
-                    player.setTeam((String)ds.child("Role").getValue());
+                    player.setRole((String)ds.child("Role").getValue());
                     player.setTeam((String)ds.child("Team").getValue());
-
-                   // Log.d(TAG, ds.child("TotScore").getValue().getClass().getName());
-
                     player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
-
-                   // Log.d(TAG, "Dhuke4");
                     player.setPrice(((Long) ds.child("Price").getValue()).intValue());
-
-                   // Log.d(TAG, "Dhuke5");
                     player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
-
-                    //Log.d(TAG, "Dhuke5");
-                   // Log.d(TAG, Integer.toString(i));
                     players.add(player);
 
                 }
