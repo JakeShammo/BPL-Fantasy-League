@@ -1,15 +1,19 @@
 package com.example.jake.fantasy;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,17 +25,19 @@ import java.util.ArrayList;
 
 public class CreatingTeam2 extends AppCompatActivity {
 
-    int batno,bolno,allno,batsel,bolsel,wktsel,allsel,money,total;
+    int batno,bolno,allno,batsel,bolsel,wktsel,allsel,money,total,foreign = 0,price=0,k=0;
     DatabaseReference dref;
     TextView plse,mone,tmName;
     ArrayList<Players> bats,bowls,alls,wkts;
     ListView batL,bolL,allL,wktL;
-    String userId;
+    String userId,teamName;
+    Button submit;
     public ProgressDialog mProgressDialog;
     private static final String TAG = "playerlist";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_creating_team2);
         plse = findViewById(R.id.plSe);
         mone = findViewById(R.id.mon);
@@ -39,25 +45,54 @@ public class CreatingTeam2 extends AppCompatActivity {
         bolL = findViewById(R.id.bowlList);
         allL = findViewById(R.id.allList);
         wktL = findViewById(R.id.wktList);
+        total = 0;
+        foreign = 0;
+        tmName = (TextView) findViewById(R.id.teamnn);
         userId=getIntent().getStringExtra("userId");
         showProgressDialog();
         bats = new ArrayList<>();
         bowls = new ArrayList<>();
         wkts = new ArrayList<>();
         alls = new ArrayList<>();
+        submit = findViewById(R.id.submit);
+        Log.d("Click","Aisha pore");
+        submit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //signIn.setBackgroundColor(Color.GRAY);
+                if(total==11) {
+                    Log.d("Click","Aisha pore");
+                    Intent startIntent = new Intent(CreatingTeam2.this,TabbedActiviy.class);
+                    startIntent.putExtra("userId",userId);
+                    startActivity(startIntent); }
+                else{
+                    Toast.makeText(CreatingTeam2.this, "Squad not complete",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
         getData();
+
     }
     void getData(){
-        dref = FirebaseDatabase.getInstance().getReference().child("USERS").child(userId);
+        dref = FirebaseDatabase.getInstance().getReference();
+
         dref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot data) {
+
+                DataSnapshot dataSnapshot = data.child("USERS").child(userId);
+
+                Log.d(TAG,"intent4");
                 //TextView balance = findViewById(R.id.total_balance_value);
                 money = Integer.parseInt(dataSnapshot.child("Balance").getValue().toString());
-                mone.setText(Integer.toString(money)+"M$");
-                total = Integer.parseInt(dataSnapshot.child("TotalSelected").getValue().toString());
-                plse.setText(Integer.toString(total)+"/11");
+                teamName = (String)dataSnapshot.child("TeamName").getValue();
+                Log.d(TAG,teamName);
+                tmName.setText(teamName);
 
+                Log.d(TAG,"hoise");
                 batno = Integer.parseInt(dataSnapshot.child("Batsmen").getValue().toString());
                 bolno  = Integer.parseInt(dataSnapshot.child("Bowler").getValue().toString());
                 allno = Integer.parseInt(dataSnapshot.child("Allrounder").getValue().toString());
@@ -65,89 +100,104 @@ public class CreatingTeam2 extends AppCompatActivity {
                 bolsel = Integer.parseInt(dataSnapshot.child("BowlerSel").getValue().toString());
                 wktsel = Integer.parseInt(dataSnapshot.child("WktKeeperSel").getValue().toString());
                 allsel = Integer.parseInt(dataSnapshot.child("AllrounderSel").getValue().toString());
+                //foreign = Integer.parseInt(dataSnapshot.child("Foreign").getValue().toString());
+                total = batsel + allsel + wktsel + bolsel;
 
+                plse.setText(Integer.toString(total)+"/11");
+                dref.child("USERS").child(userId).child("TotalSelected").setValue(Integer.toString(total));
                 //Log.d(TAG,"dsded");
                 //Log.d(TAG,Integer.toString(batsel));
-                if(batsel>0){
+
+                if(batsel>0 && bats.size()<batsel){
                     for(int i=0;i<batsel;i++){
-                        DataSnapshot ds = dataSnapshot.child("BatsmenL").child(Integer.toString(i));
+                        DataSnapshot ds = dataSnapshot.child("Bat").child(Integer.toString(i));
+                        Log.d(TAG,ds.getValue().toString());
+                        String pid = ds.getValue().toString();
+                        ds = data.child("PLAYERS").child(pid);
                         Players player = new Players();
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
-                        player.setCountry(dataSnapshot.child("Country").getValue().toString());
-                        player.setName(dataSnapshot.child("Name").getValue().toString());
-                        player.setRole(dataSnapshot.child("Role").getValue().toString());
-                        player.setTeam(dataSnapshot.child("Team").getValue().toString());
-                        player.setTotScore(Integer.parseInt(dataSnapshot.child("TotScore").getValue().toString()));
-                        player.setPrice(Integer.parseInt(dataSnapshot.child("Price").getValue().toString()));
-                        player.setId(Integer.parseInt(dataSnapshot.child("PlayerId").getValue().toString()));
+                        player.setCountry((String)ds.child("Country").getValue());
+                        player.setName((String)ds.child("Name").getValue());
+                        player.setRole((String)ds.child("Role").getValue());
+                        player.setTeam((String)ds.child("Team").getValue());
+                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        if(!player.getCountry().startsWith("Bangla")) foreign++;
+                        price += player.getPrice();
                         bats.add(player);
 
                     }
                 }
-                if(batsel>0){
-                    for(int i=0;i<batsel;i++){
-                        DataSnapshot ds = dataSnapshot.child("BatsmenL").child(Integer.toString(i));
-                        Players player = new Players();
-                        player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
-                        player.setCountry(dataSnapshot.child("Country").getValue().toString());
-                        player.setName(dataSnapshot.child("Name").getValue().toString());
-                        player.setRole(dataSnapshot.child("Role").getValue().toString());
-                        player.setTeam(dataSnapshot.child("Team").getValue().toString());
-                        player.setTotScore(Integer.parseInt(dataSnapshot.child("TotScore").getValue().toString()));
-                        player.setPrice(Integer.parseInt(dataSnapshot.child("Price").getValue().toString()));
-                        player.setId(Integer.parseInt(dataSnapshot.child("PlayerId").getValue().toString()));
-                        bats.add(player);
-
-                    }
-                }
-                if(bolsel>0){
+                if(bolsel>0 && bowls.size()<bolsel){
                     for(int i=0;i<bolsel;i++){
-                        DataSnapshot ds = dataSnapshot.child("BowlerL").child(Integer.toString(i));
+                        DataSnapshot ds = dataSnapshot.child("Bowl").child(Integer.toString(i));
                         Players player = new Players();
+                        String pid = ds.getValue().toString();
+                        ds = data.child("PLAYERS").child(pid);
+
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
-                        player.setCountry(dataSnapshot.child("Country").getValue().toString());
-                        player.setName(dataSnapshot.child("Name").getValue().toString());
-                        player.setRole(dataSnapshot.child("Role").getValue().toString());
-                        player.setTeam(dataSnapshot.child("Team").getValue().toString());
-                        player.setTotScore(Integer.parseInt(dataSnapshot.child("TotScore").getValue().toString()));
-                        player.setPrice(Integer.parseInt(dataSnapshot.child("Price").getValue().toString()));
-                        player.setId(Integer.parseInt(dataSnapshot.child("PlayerId").getValue().toString()));
+                        player.setCountry((String)ds.child("Country").getValue());
+                        player.setName((String)ds.child("Name").getValue());
+                        player.setRole((String)ds.child("Role").getValue());
+                        player.setTeam((String)ds.child("Team").getValue());
+                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        if(!player.getCountry().startsWith("Bangla")) foreign++;
+                        price += player.getPrice();
                         bowls.add(player);
 
                     }
                 }
-                if(wktsel>0){
+                if(wktsel>0 && wkts.size()<wktsel){
                     for(int i=0;i<wktsel;i++){
-                        DataSnapshot ds = dataSnapshot.child("WktkeeperL").child(Integer.toString(i));
+                        DataSnapshot ds = dataSnapshot.child("Wkt").child(Integer.toString(i));
                         Players player = new Players();
+                        String pid = ds.getValue().toString();
+                        ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
-                        player.setCountry(dataSnapshot.child("Country").getValue().toString());
-                        player.setName(dataSnapshot.child("Name").getValue().toString());
-                        player.setRole(dataSnapshot.child("Role").getValue().toString());
-                        player.setTeam(dataSnapshot.child("Team").getValue().toString());
-                        player.setTotScore(Integer.parseInt(dataSnapshot.child("TotScore").getValue().toString()));
-                        player.setPrice(Integer.parseInt(dataSnapshot.child("Price").getValue().toString()));
-                        player.setId(Integer.parseInt(dataSnapshot.child("PlayerId").getValue().toString()));
+                        player.setCountry((String)ds.child("Country").getValue());
+                        player.setName((String)ds.child("Name").getValue());
+                        player.setRole((String)ds.child("Role").getValue());
+                        player.setTeam((String)ds.child("Team").getValue());
+                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        if(!player.getCountry().startsWith("Bangla")) foreign++;
+                        price += player.getPrice();
                         wkts.add(player);
 
                     }
                 }
-                if(allsel>0){
+                if(allsel>0 && alls.size()<allsel){
                     for(int i=0;i<allsel;i++){
-                        DataSnapshot ds = dataSnapshot.child("AllrounderL").child(Integer.toString(i));
+                        DataSnapshot ds = dataSnapshot.child("All").child(Integer.toString(i));
                         Players player = new Players();
+                        String pid = ds.getValue().toString();
+                        ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
-                        player.setCountry(dataSnapshot.child("Country").getValue().toString());
-                        player.setName(dataSnapshot.child("Name").getValue().toString());
-                        player.setRole(dataSnapshot.child("Role").getValue().toString());
-                        player.setTeam(dataSnapshot.child("Team").getValue().toString());
-                        player.setTotScore(Integer.parseInt(dataSnapshot.child("TotScore").getValue().toString()));
-                        player.setPrice(Integer.parseInt(dataSnapshot.child("Price").getValue().toString()));
-                        player.setId(Integer.parseInt(dataSnapshot.child("PlayerId").getValue().toString()));
+                        player.setCountry((String)ds.child("Country").getValue());
+                        player.setName((String)ds.child("Name").getValue());
+                        player.setRole((String)ds.child("Role").getValue());
+                        player.setTeam((String)ds.child("Team").getValue());
+                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        if(!player.getCountry().startsWith("Bangla")) foreign++;
+                        price += player.getPrice();
                         alls.add(player);
 
                     }
+
                 }
+                if(k==0){
+                    k=1;
+                    dref.child("USERS").child(userId).child("Foreign").setValue(foreign);
+                    dref.child("USERS").child(userId).child("Price").setValue(price);
+                }
+
+                mone.setText(Integer.toString(money-price)+"M$");
 
                 generateLists();
             }
@@ -175,6 +225,108 @@ public class CreatingTeam2 extends AppCompatActivity {
         Utility.setListViewHeightBasedOnChildren(allL);
         Utility.setListViewHeightBasedOnChildren(bolL);
         hideProgressDialog();
+        batL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(CreatingTeam2.this,PlayerList.class);
+                startIntent.putExtra("UserId",userId);
+                startIntent.putExtra("Role","Bat");
+                startIntent.putExtra("Country","Any");
+                startIntent.putExtra("Name","Any");
+                startIntent.putExtra("MaxPrice","Any");
+                startIntent.putExtra("MinPrice","Any");
+                startIntent.putExtra("Team","Any");
+                //startIntent.putExtra("Money",Integer.toString(money));
+                //startIntent.putExtra("Fore",Integer.toString(foreign));
+                if(position>=batsel) {
+                    startIntent.putExtra("Position", Integer.toString(batsel));
+                    startIntent.putExtra("One","Yes");
+                }
+                else{
+                    startIntent.putExtra("Position",Integer.toString(position));
+                    startIntent.putExtra("One","No");
+                }
+                Log.d(TAG,"vorse");
+                startActivity(startIntent);
+            }
+        });
+        wktL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(CreatingTeam2.this,PlayerList.class);
+                startIntent.putExtra("UserId",userId);
+                startIntent.putExtra("Role","Wkt");
+                startIntent.putExtra("Country","Any");
+                startIntent.putExtra("Name","Any");
+                startIntent.putExtra("MaxPrice","Any");
+                startIntent.putExtra("MinPrice","Any");
+                startIntent.putExtra("Team","Any");
+                //startIntent.putExtra("Money",Integer.toString(money));
+                //startIntent.putExtra("Fore",Integer.toString(foreign));
+                if(position>=wktsel){
+                    startIntent.putExtra("Position",Integer.toString(wktsel));
+                    startIntent.putExtra("One","Yes");
+                }
+                else{
+                    startIntent.putExtra("Position",Integer.toString(position));
+                    startIntent.putExtra("One","No");
+                }
+                startActivity(startIntent);
+            }
+        });
+        allL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(CreatingTeam2.this,PlayerList.class);
+                startIntent.putExtra("UserId",userId);
+                startIntent.putExtra("Role","All");
+                startIntent.putExtra("Country","Any");
+                startIntent.putExtra("Name","Any");
+                startIntent.putExtra("MaxPrice","Any");
+                startIntent.putExtra("MinPrice","Any");
+                startIntent.putExtra("Team","Any");
+                //startIntent.putExtra("Money",Integer.toString(money));
+               //startIntent.putExtra("Fore",Integer.toString(foreign));
+                if(position>=allsel) {
+                    startIntent.putExtra("Position", Integer.toString(allsel));
+                    startIntent.putExtra("One","Yes");
+                }
+                else{
+                    startIntent.putExtra("Position",Integer.toString(position));
+                    startIntent.putExtra("One","No");
+                }
+                startActivity(startIntent);
+            }
+        });
+        bolL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(CreatingTeam2.this,PlayerList.class);
+                startIntent.putExtra("UserId",userId);
+                startIntent.putExtra("Role","Bowl");
+                startIntent.putExtra("Country","Any");
+                startIntent.putExtra("Name","Any");
+                startIntent.putExtra("MaxPrice","Any");
+                startIntent.putExtra("MinPrice","Any");
+                startIntent.putExtra("Team","Any");
+                //startIntent.putExtra("Money",Integer.toString(money));
+                //startIntent.putExtra("Fore",Integer.toString(foreign));
+                if(position>=bolsel){
+                    startIntent.putExtra("Position",Integer.toString(bolsel));
+                    startIntent.putExtra("One","Yes");
+
+                }
+                else{
+                    startIntent.putExtra("Position",Integer.toString(position));
+                    startIntent.putExtra("One","No");
+                }
+                startActivity(startIntent);
+            }
+        });
         //Log.d(TAG, "Ekhane1");
     }
 
@@ -219,7 +371,7 @@ public class CreatingTeam2 extends AppCompatActivity {
                 name.setText(pplayers.get(i).getName());
                 roll.setText(pplayers.get(i).getRole());
                 team.setText(pplayers.get(i).getTeam());
-                prices.setText(Integer.toString(pplayers.get(i).getPrice()));
+                prices.setText(Integer.toString(pplayers.get(i).getPrice())+"M$");
              }
              else{
                 name.setText("Add Player");
@@ -251,6 +403,11 @@ public class CreatingTeam2 extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStop() {
+        Log.d(TAG,"bondho hoy");
+        super.onStop();
+    }
 
     public void hideProgressDialog() {
 

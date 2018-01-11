@@ -59,7 +59,7 @@ public class CreateAccountActivity extends AppCompatActivity implements
 
         Log.d(TAG, "createUserWithEmail:ekhane ashlo");
         final String semail = email.getText().toString();
-        final String spassword = email.getText().toString();
+        final String spassword = password.getText().toString();
 
 
         showProgressDialog();

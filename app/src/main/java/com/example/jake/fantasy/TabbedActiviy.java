@@ -1,5 +1,6 @@
 package com.example.jake.fantasy;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class TabbedActiviy extends AppCompatActivity {
 
@@ -42,6 +46,7 @@ public class TabbedActiviy extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionPageAdapter mSectionPageAdapter;
     private Typeface tf1;
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +54,7 @@ public class TabbedActiviy extends AppCompatActivity {
         mSectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
-
+        mAuth = FirebaseAuth.getInstance();
         tf1 = Typeface.createFromAsset(getAssets(),  "abc.ttf");
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -58,6 +63,7 @@ public class TabbedActiviy extends AppCompatActivity {
         //toolbar.setTitle("BPL FANTASY LEAGUE");
         setSupportActionBar(toolbar);
         TextView toolbarTitle = null;
+        toolbar.inflateMenu(R.menu.drawermenu);
         for (int i = 0; i < toolbar.getChildCount(); ++i) {
             View child = toolbar.getChildAt(i);
 
@@ -93,6 +99,8 @@ public class TabbedActiviy extends AppCompatActivity {
 
     }
 
+
+
     public void setupViewPager(ViewPager viewPager){
         SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new TeamFragment(),"MY TEAM");
@@ -100,15 +108,31 @@ public class TabbedActiviy extends AppCompatActivity {
         adapter.addFragment(new FixtFragment(),"FIXTURES");
         viewPager.setAdapter(adapter);
     }
-/*
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tabbed_activiy, menu);
+        getMenuInflater().inflate(R.menu.drawermenu, menu);
+
         return true;
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.signOut:
+                Toast.makeText(TabbedActiviy.this,"Signing Out",Toast.LENGTH_SHORT).show();
+                mAuth.getInstance().signOut();
+                Intent intent2= new Intent(TabbedActiviy.this,MainActivity.class);
+                startActivity(intent2);
+                finish();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

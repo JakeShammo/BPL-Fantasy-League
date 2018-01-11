@@ -16,7 +16,7 @@
         android:textSize="30dp" />
 
     <Button
-        android:id="@+id/teamName"
+        android:id="@+id/filterP"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <TextView
+        android:id="@+id/match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:textColor="#000"
+
+        android:layout_marginLeft="10dp"
+        android:text="Match"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/matchNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/match"
+        android:layout_marginTop="0dp"
+        android:textColor="#000"
+        android:layout_marginLeft="50dp"
+        android:text="1"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/teams"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:textColor="#000"
+
+        android:layout_marginLeft="110dp"
+        android:text="Dhaka Dynamites vs Chittagong Vikings"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/venue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teams"
+        android:layout_marginTop="0dp"
+        android:textColor="#000"
+        android:layout_marginLeft="110dp"
+        android:text="Venue: Dhaka"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/venue"
+        android:layout_marginTop="0dp"
+        android:textColor="#000"
+        android:layout_marginLeft="110dp"
+        android:text="02:00"
+        android:textSize="15dp" />
+
+
+</RelativeLayout>

@@ -10,19 +10,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
 
 
     TextView tv1,tv2;
     Typeface tf1;
     Button signIn, createA;
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
+        mAuth = FirebaseAuth.getInstance();
         tv1 = findViewById(R.id.textView);
 
         tv2 = findViewById(R.id.textView2);
@@ -52,5 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+
     }
 }

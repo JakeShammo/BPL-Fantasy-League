@@ -22,6 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@id/listIm"
         android:layout_marginTop="10dp"
+        android:textColor="#000"
 
         android:layout_marginLeft="70dp"
         android:text="Player Name"
@@ -35,6 +36,7 @@
         android:layout_marginTop="38dp"
         android:layout_alignLeft="@id/listIm"
         android:layout_marginLeft="74dp"
+        android:textColor="#000"
 
         android:text="Player Name"
         android:textSize="15dp" />
@@ -46,6 +48,7 @@
         android:layout_marginTop="20dp"
         android:layout_alignLeft="@id/pName"
         android:layout_marginLeft="250dp"
+        android:textColor="#000"
 
         android:text="Price"
         android:textSize="28dp" />
@@ -58,7 +61,7 @@
         android:layout_marginTop="20dp"
         android:layout_alignLeft="@id/listIm"
         android:layout_marginLeft="70dp"
-
+        android:textColor="#000"
         android:text="Player Name"
         android:textSize="20dp" />
 
@@ -70,6 +73,7 @@
         android:layout_marginTop="55dp"
         android:layout_alignLeft="@id/pName"
         android:layout_marginLeft="260dp"
+        android:textColor="#000"
 
         android:text="10"
         android:textSize="28dp" />

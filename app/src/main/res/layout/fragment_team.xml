@@ -1,20 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/textTeam"
+    android:fillViewport="true">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="66dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Team"
-        android:textSize="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="wrap_content"
+        tools:context="com.example.jake.fantasy.CreatingTeam1">
+
+        <TextView
+            android:id="@+id/nameteam"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="0dp"
+            android:hint="TeamName"
+            android:textSize="30dp"
+            android:textColor="#000"/>
+
+        <Button
+            android:id="@+id/viewStats"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="280dp"
+            android:layout_marginTop="10dp"
+            android:text="View Stats"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#FFF"
+            android:textSize="18dp" />
+        <Button
+            android:id="@+id/editTeam"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="280dp"
+            android:text="Edit Team"
+            android:textSize="18dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#FFF"/>
+
+        <TextView
+            android:id="@+id/Motto"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="5dp"
+            android:hint="Team Motto"
+            android:textSize="15dp"
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="5dp"
+            android:hint="Points"
+            android:textSize="22dp"
+            android:textColor="#000"/>
+
+
+
+        <TextView
+            android:id="@+id/bats"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:layout_weight="1"
+            android:text="Batsmen:"
+            android:textColor="#000"
+            android:textSize="30dp" />
+        <ListView
+            android:id="@+id/batList1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="160dp"
+            />
+        <TextView
+            android:id="@+id/wkts"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/batList1"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:text="WktKeeper"
+            android:textSize="30dp" />
+
+        <ListView
+            android:id="@+id/wktList1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wkts"
+            android:layout_marginTop="10dp"
+            />
+
+
+        <TextView
+            android:id="@+id/alls"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wktList1"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:text="AllRounders:"
+            android:textSize="30dp" />
+        <ListView
+            android:id="@+id/allList1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alls"
+            android:layout_marginTop="10dp"/>
+
+
+
+        <TextView
+            android:id="@+id/bowl"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/allList1"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:text="Bowlers:"
+            android:textSize="30dp" />
+        <ListView
+            android:id="@+id/bowlList1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bowl"
+            android:layout_marginTop="10dp"
+            />
+
+
+
+
+    </RelativeLayout>
+
+
+
+</ScrollView>

@@ -29,9 +29,10 @@ public class SignInActivity extends AppCompatActivity {
 
     Button signIn;
     EditText mEmailField,mPasswordField;
-
+    int total;
     public ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
+    String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +43,8 @@ public class SignInActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.editText2);
         mAuth = FirebaseAuth.getInstance();
         signIn = findViewById(R.id.button3);
-        mEmailField.setText("singulaity.bhole@gmail.com");
-        mPasswordField.setText("123456");
+        mEmailField.setText("iamjacobzz@outlook.com");
+        mPasswordField.setText("1234567");
         signIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -60,36 +61,7 @@ public class SignInActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    //Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                    final String userId=user.getUid();
-                                    Toast.makeText(SignInActivity.this,"Signed In",Toast.LENGTH_SHORT).show();
-                                    final DatabaseReference db= FirebaseDatabase.getInstance().getReference("USERS/"+userId).child("TotalSelected");
-                                    db.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            int total = Integer.parseInt(dataSnapshot.getValue().toString());
-                                            if (total==11){
-                                                Intent startIntent = new Intent(SignInActivity.this,TabbedActiviy.class);
-                                                startIntent.putExtra("userId",userId);
-                                                startActivity(startIntent);
-                                        /*---you might want to call finish() method here but never do that
-                                        ----call finish() method from outside the listener---
-                                         */
-                                            }
-                                            else{
-                                                Intent startIntent = new Intent(SignInActivity.this,CreatingTeam2.class);
-                                                startIntent.putExtra("userId",userId);
-                                                startActivity(startIntent);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                    finish();
+                                    updateUI();
                                 }
                                 else {
                                    // Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -108,6 +80,60 @@ public class SignInActivity extends AppCompatActivity {
 
                         });}
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser()!=null){
+
+            Log.d("Click","Aisha pore");
+            updateUI();
+        }
+    }
+    void updateUI(){
+        //Log.d(TAG, "signInWithEmail:success");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        userId=user.getUid();
+        Toast.makeText(SignInActivity.this,"Signed In",Toast.LENGTH_SHORT).show();
+        final DatabaseReference db= FirebaseDatabase.getInstance().getReference("USERS/"+userId).child("TotalSelected");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                total = Integer.parseInt(dataSnapshot.getValue().toString());
+                change();
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        try {
+            Thread.sleep(1000);
+        } catch(Exception ex) {/* */}
+
+
+        finish();
+
+    }
+
+    void change(){
+        if (total==11){
+            Intent startIntent = new Intent(SignInActivity.this,TabbedActiviy.class);
+            startIntent.putExtra("userId",userId);
+            startActivity(startIntent);
+                                        /*---you might want to call finish() method here but never do that
+                                        ----call finish() method from outside the listener---
+                                         */
+        }
+        else{
+            Intent startIntent = new Intent(SignInActivity.this,CreatingTeam2.class);
+            startIntent.putExtra("userId",userId);
+            startActivity(startIntent);
+        }
     }
 
     private boolean validateForm() {
@@ -148,7 +174,10 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     public void hideProgressDialog() {
 

@@ -27,7 +27,8 @@
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".CreatingTeam1" />
         <activity android:name=".PlayerList" />
-        <activity android:name=".CreatingTeam2"></activity>
+        <activity android:name=".CreatingTeam2" />
+        <activity android:name=".FilterActivity"></activity>
     </application>
 
 </manifest>

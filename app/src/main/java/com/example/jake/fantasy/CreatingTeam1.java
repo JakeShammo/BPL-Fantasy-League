@@ -30,6 +30,7 @@ public class CreatingTeam1 extends AppCompatActivity {
     DatabaseReference dref;
     ArrayAdapter <String> arrayBat, arrayBol,arrayWkt,arrayAll;
     MaterialBetterSpinner batSpin, bolSpin, wktSpin,allSpin;
+    private static final String TAG = "playerlist";
     Button select;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,11 @@ public class CreatingTeam1 extends AppCompatActivity {
                 dref.child("WktKeeperSel").setValue(Integer.toString(0));
                 Intent startIntent = new Intent(CreatingTeam1.this,CreatingTeam2.class);
                 startIntent.putExtra("userId",userId);
+
+                Log.d(TAG,"intent");
                 startActivity(startIntent);
+
+                Log.d(TAG,"intent");
 
 
             }
