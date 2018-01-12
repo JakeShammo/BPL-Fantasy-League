@@ -79,7 +79,7 @@ public class CreateAccountActivity extends AppCompatActivity implements
                             dref = dref.child("USERS").child(userId);
                             dref.child("Name").setValue(name.getText().toString());
                             dref.child("Email").setValue(semail);dref.child("Password").setValue(spassword);
-                            dref.child("Balance").setValue(100);dref.child("Score").setValue(0);
+                            dref.child("Balance").setValue(110);dref.child("Score").setValue(0);
                             dref.child("Since").setValue(ServerValue.TIMESTAMP);
                             dref.child("TotalSelected").setValue(0);
                             Toast.makeText(CreateAccountActivity.this,"Account Created",Toast.LENGTH_SHORT).show();

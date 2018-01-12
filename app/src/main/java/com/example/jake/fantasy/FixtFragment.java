@@ -29,6 +29,7 @@ public class FixtFragment extends Fragment {
     DatabaseReference dref;
     ArrayList <String> teamsL,matchnoL,venueL,timeL;
     ListView listView;
+    ValueEventListener mListener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class FixtFragment extends Fragment {
     void populateMatches(){
         dref = FirebaseDatabase.getInstance().getReference();
         //DatabaseReference ddref = dref.child("Players")
-        dref.addValueEventListener(new ValueEventListener() {
+        mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -73,7 +74,8 @@ public class FixtFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        dref.addValueEventListener(mListener);
 
         Log.d(TAG, "Dhuke");
         //while(players.size()<165);
@@ -118,5 +120,20 @@ public class FixtFragment extends Fragment {
 
             return view;
         }
+    }
+    @Override
+    public void onPause() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onStop();
     }
 }

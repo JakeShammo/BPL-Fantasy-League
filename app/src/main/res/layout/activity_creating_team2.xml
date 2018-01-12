@@ -83,7 +83,7 @@
         android:layout_below="@+id/batList"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:text="WktKeeper"
+        android:text="WktKeeper:"
         android:textSize="30dp" />
 
     <ListView

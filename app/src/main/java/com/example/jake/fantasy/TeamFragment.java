@@ -37,6 +37,8 @@ public class TeamFragment extends Fragment {
     ListView batL,bolL,allL,wktL;
     String userId,teamName,teamMotto;
     Button edit;
+
+    ValueEventListener mListener;
     public ProgressDialog mProgressDialog;
     @Nullable
     @Override
@@ -79,7 +81,7 @@ public class TeamFragment extends Fragment {
     }
     void getData(){
         dref = FirebaseDatabase.getInstance().getReference();
-        dref.addValueEventListener(new ValueEventListener() {
+        mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot data) {
                 DataSnapshot dataSnapshot = data.child("USERS").child(userId);
@@ -111,17 +113,18 @@ public class TeamFragment extends Fragment {
 
                 //if(batsel>0 && bats.size()<batsel){
                     for(int i=0;i<batno;i++){
+                        Players player = new Players();
                         DataSnapshot ds = dataSnapshot.child("Bat").child(Integer.toString(i));
                         Log.d(TAG,ds.getValue().toString());
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
+                        player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
+
                         ds = data.child("PLAYERS").child(pid);
-                        Players player = new Players();
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -135,7 +138,8 @@ public class TeamFragment extends Fragment {
                     for(int i=0;i<bolno;i++){
                         DataSnapshot ds = dataSnapshot.child("Bowl").child(Integer.toString(i));
                         Players player = new Players();
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
+                        player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
                         ds = data.child("PLAYERS").child(pid);
 
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
@@ -143,7 +147,6 @@ public class TeamFragment extends Fragment {
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -156,7 +159,8 @@ public class TeamFragment extends Fragment {
                     for(int i=0;i<1;i++){
                         DataSnapshot ds = dataSnapshot.child("Wkt").child(Integer.toString(i));
                         Players player = new Players();
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
+                        player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
                         ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
@@ -176,14 +180,14 @@ public class TeamFragment extends Fragment {
                     for(int i=0;i<allno;i++){
                         DataSnapshot ds = dataSnapshot.child("All").child(Integer.toString(i));
                         Players player = new Players();
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
+                        player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
                         ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                        // if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -209,7 +213,8 @@ public class TeamFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        dref.addValueEventListener(mListener);
     }
 
     void generateLists(){
@@ -299,6 +304,22 @@ public class TeamFragment extends Fragment {
 
         }
 
+    }
+
+    @Override
+    public void onPause() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onStop();
     }
 
 }

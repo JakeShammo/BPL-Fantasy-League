@@ -72,7 +72,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="55dp"
         android:layout_alignLeft="@id/pName"
-        android:layout_marginLeft="260dp"
+        android:layout_marginLeft="270dp"
         android:textColor="#000"
 
         android:text="10"

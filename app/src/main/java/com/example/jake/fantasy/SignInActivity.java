@@ -33,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
     String userId;
+    ValueEventListener mListener;DatabaseReference db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,6 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
         if(mAuth.getCurrentUser()!=null){
 
-            Log.d("Click","Aisha pore");
             updateUI();
         }
     }
@@ -96,12 +96,24 @@ public class SignInActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userId=user.getUid();
         Toast.makeText(SignInActivity.this,"Signed In",Toast.LENGTH_SHORT).show();
-        final DatabaseReference db= FirebaseDatabase.getInstance().getReference("USERS/"+userId).child("TotalSelected");
-        db.addValueEventListener(new ValueEventListener() {
+        db= FirebaseDatabase.getInstance().getReference("USERS/"+userId).child("TotalSelected");
+        mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 total = Integer.parseInt(dataSnapshot.getValue().toString());
-                change();
+                if (total==11){
+                    Intent startIntent = new Intent(SignInActivity.this,TabbedActiviy.class);
+                    startIntent.putExtra("userId",userId);
+                    startActivity(startIntent);
+                                        /*---you might want to call finish() method here but never do that
+                                        ----call finish() method from outside the listener---
+                                         */
+                }
+                else{
+                    Intent startIntent = new Intent(SignInActivity.this,CreatingTeam2.class);
+                    startIntent.putExtra("userId",userId);
+                    startActivity(startIntent);
+                }
 
             }
 
@@ -110,30 +122,16 @@ public class SignInActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-        try {
-            Thread.sleep(1000);
-        } catch(Exception ex) {/* */}
+        };
 
-
-        finish();
+        db.addValueEventListener(mListener);
+        //db.removeEventListener(mListener);
+        //finish();
 
     }
 
     void change(){
-        if (total==11){
-            Intent startIntent = new Intent(SignInActivity.this,TabbedActiviy.class);
-            startIntent.putExtra("userId",userId);
-            startActivity(startIntent);
-                                        /*---you might want to call finish() method here but never do that
-                                        ----call finish() method from outside the listener---
-                                         */
-        }
-        else{
-            Intent startIntent = new Intent(SignInActivity.this,CreatingTeam2.class);
-            startIntent.putExtra("userId",userId);
-            startActivity(startIntent);
-        }
+
     }
 
     private boolean validateForm() {
@@ -176,7 +174,18 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        if (mListener != null && db!=null) {
+        db.removeEventListener(mListener);
+    }
         super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mListener != null && db!=null) {
+            db.removeEventListener(mListener);
+        }
+        super.onPause();
     }
 
     public void hideProgressDialog() {

@@ -33,6 +33,7 @@ public class CreatingTeam2 extends AppCompatActivity {
     String userId,teamName;
     Button submit;
     public ProgressDialog mProgressDialog;
+    ValueEventListener mListener;
     private static final String TAG = "playerlist";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,14 @@ public class CreatingTeam2 extends AppCompatActivity {
         wkts = new ArrayList<>();
         alls = new ArrayList<>();
         submit = findViewById(R.id.submit);
-        Log.d("Click","Aisha pore");
+        //Log.d("Click","Aisha pore");
         submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 //signIn.setBackgroundColor(Color.GRAY);
                 if(total==11) {
-                    Log.d("Click","Aisha pore");
+                   // Log.d("Click","Aisha pore");
                     Intent startIntent = new Intent(CreatingTeam2.this,TabbedActiviy.class);
                     startIntent.putExtra("userId",userId);
                     startActivity(startIntent); }
@@ -79,7 +80,7 @@ public class CreatingTeam2 extends AppCompatActivity {
     void getData(){
         dref = FirebaseDatabase.getInstance().getReference();
 
-        dref.addValueEventListener(new ValueEventListener() {
+        mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot data) {
 
@@ -110,17 +111,17 @@ public class CreatingTeam2 extends AppCompatActivity {
 
                 if(batsel>0 && bats.size()<batsel){
                     for(int i=0;i<batsel;i++){
+                        Players player = new Players();
                         DataSnapshot ds = dataSnapshot.child("Bat").child(Integer.toString(i));
                         Log.d(TAG,ds.getValue().toString());
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
                         ds = data.child("PLAYERS").child(pid);
-                        Players player = new Players();
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -133,7 +134,7 @@ public class CreatingTeam2 extends AppCompatActivity {
                     for(int i=0;i<bolsel;i++){
                         DataSnapshot ds = dataSnapshot.child("Bowl").child(Integer.toString(i));
                         Players player = new Players();
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
                         ds = data.child("PLAYERS").child(pid);
 
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
@@ -141,7 +142,7 @@ public class CreatingTeam2 extends AppCompatActivity {
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -154,14 +155,14 @@ public class CreatingTeam2 extends AppCompatActivity {
                     for(int i=0;i<wktsel;i++){
                         DataSnapshot ds = dataSnapshot.child("Wkt").child(Integer.toString(i));
                         Players player = new Players();
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
                         ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -174,14 +175,14 @@ public class CreatingTeam2 extends AppCompatActivity {
                     for(int i=0;i<allsel;i++){
                         DataSnapshot ds = dataSnapshot.child("All").child(Integer.toString(i));
                         Players player = new Players();
-                        String pid = ds.getValue().toString();
+                        String pid = ds.child("PID").getValue().toString();
                         ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
+                        player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -206,7 +207,8 @@ public class CreatingTeam2 extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        dref.addValueEventListener(mListener);
     }
     void generateLists(){
 
@@ -405,8 +407,18 @@ public class CreatingTeam2 extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        Log.d(TAG,"bondho hoy");
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
         super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onPause();
     }
 
     public void hideProgressDialog() {

@@ -41,6 +41,7 @@ public class PlayerList extends AppCompatActivity {
     int tot,par;
     Button filter;
     public ProgressDialog mProgressDialog;
+    ValueEventListener mListener;
     private static final String TAG = "filter";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class PlayerList extends AppCompatActivity {
         players = new ArrayList<>();
         dref = FirebaseDatabase.getInstance().getReference();
         //DatabaseReference ddref = dref.child("Players")
-        dref.addValueEventListener(new ValueEventListener() {
+        mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -108,7 +109,7 @@ public class PlayerList extends AppCompatActivity {
                 if(role.equals("All"))
                     par = Integer.parseInt( dataSnapshot.child("USERS").child(userId).child("AllrounderSel").getValue().toString());
                 for(int i=0;i<par;i++){
-                    pids.add(Integer.parseInt(dataSnapshot.child("USERS").child(userId).child(role).child(Integer.toString(i)).getValue().toString())+1);
+                    pids.add(Integer.parseInt(dataSnapshot.child("USERS").child(userId).child(role).child(Integer.toString(i)).child("PID").getValue().toString())+1);
                     Log.d(TAG,Integer.toString(pids.get(i)));
                 }
                 userMon = Integer.parseInt( dataSnapshot.child("USERS").child(userId).child("Price").getValue().toString());
@@ -138,8 +139,9 @@ public class PlayerList extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
 
+        dref.addValueEventListener(mListener);
         Log.d(TAG, "Dhuke");
         //while(players.size()<165);
         //Log.d(TAG, players.get(0).getName());
@@ -149,7 +151,7 @@ public class PlayerList extends AppCompatActivity {
         filtered = new ArrayList<>();
         for(int i=0;i<players.size();i++){
             Players p = players.get(i);
-            if((role.equals("Any") || role.equals(p.getRole())) && (name.equals("Any") || p.getName().contains(name))&&
+            if((role.equals("Any") || role.equals(p.getRole()) || (role.equals("Bat") && p.getRole().equals("Wkt"))) && (name.equals("Any") || p.getName().contains(name))&&
             (country.equals("Any") || country.equals(p.getCountry())) && (team.equals("Any") || p.getTeam().startsWith(team))
                     && ((maxPrice.equals("Any") || p.getPrice()<=Integer.parseInt(maxPrice))) &&
                     ((minPrice.equals("Any") || p.getPrice()>=Integer.parseInt(minPrice))) && (!pids.contains(p.getId())))
@@ -165,6 +167,9 @@ public class PlayerList extends AppCompatActivity {
         Log.d(TAG, "geege");
         listView.setAdapter(custopmAdapter);
         hideProgressDialog();
+
+        dref = FirebaseDatabase.getInstance().getReference();
+        dref = dref.child("USERS").child(userId);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -177,7 +182,6 @@ public class PlayerList extends AppCompatActivity {
                     return;
                 }
 
-                dref = dref.child("USERS").child(userId);
                 if(!pp.getCountry().startsWith("Bangla")){
                     if(fore==5) {
                         Toast.makeText(PlayerList.this, "Maximum 5 foreign players allowed",
@@ -186,7 +190,8 @@ public class PlayerList extends AppCompatActivity {
                     }
                 }
                // showProgressDialog(2);
-                dref.child(role).child(posi).setValue(Pid);
+                dref.child(role).child(posi).child("PID").setValue(Pid);
+                dref.child(role).child(posi).child("Score").setValue(0);
                 if(one.equals("Yes")){
                     if(role.equals("Bat")){
                         dref.child("BatsmenSel").setValue(Integer.toString(par+1));
@@ -275,7 +280,21 @@ public class PlayerList extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onStop();
+    }
 
+    @Override
+    protected void onPause() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onPause();
+    }
 
     public void hideProgressDialog() {
 
