@@ -11,6 +11,8 @@
     android:layout_height="wrap_content"
     tools:context="com.example.jake.fantasy.CreatingTeam1">
 
+
+
     <TextView
         android:id="@+id/teamnn"
         android:layout_width="200dp"

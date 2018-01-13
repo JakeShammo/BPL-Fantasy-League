@@ -1,10 +1,14 @@
 package com.example.jake.fantasy;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,13 +19,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import static com.google.firebase.auth.FirebaseAuth.getInstance;
 
 public class CreatingTeam2 extends AppCompatActivity {
 
@@ -32,13 +41,15 @@ public class CreatingTeam2 extends AppCompatActivity {
     ListView batL,bolL,allL,wktL;
     String userId,teamName;
     Button submit;
+    FirebaseAuth mAuth;
     public ProgressDialog mProgressDialog;
     ValueEventListener mListener;
     private static final String TAG = "playerlist";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Select Squad");
         setContentView(R.layout.activity_creating_team2);
         plse = findViewById(R.id.plSe);
         mone = findViewById(R.id.mon);
@@ -66,7 +77,10 @@ public class CreatingTeam2 extends AppCompatActivity {
                    // Log.d("Click","Aisha pore");
                     Intent startIntent = new Intent(CreatingTeam2.this,TabbedActiviy.class);
                     startIntent.putExtra("userId",userId);
-                    startActivity(startIntent); }
+                    startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(startIntent);
+                    finish();
+                }
                 else{
                     Toast.makeText(CreatingTeam2.this, "Squad not complete",
                             Toast.LENGTH_SHORT).show();
@@ -76,6 +90,31 @@ public class CreatingTeam2 extends AppCompatActivity {
         });
         getData();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.drawermenu, menu);
+
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.signOut:
+                Toast.makeText(CreatingTeam2.this,"Signing Out",Toast.LENGTH_SHORT).show();
+                mAuth.getInstance().signOut();
+                Intent intent2= new Intent(CreatingTeam2.this,MainActivity.class);
+
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
+                finish();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
     void getData(){
         dref = FirebaseDatabase.getInstance().getReference();
@@ -123,6 +162,7 @@ public class CreatingTeam2 extends AppCompatActivity {
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
                         price += player.getPrice();
@@ -144,6 +184,7 @@ public class CreatingTeam2 extends AppCompatActivity {
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
                         price += player.getPrice();
@@ -164,6 +205,7 @@ public class CreatingTeam2 extends AppCompatActivity {
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
                         price += player.getPrice();
@@ -184,6 +226,7 @@ public class CreatingTeam2 extends AppCompatActivity {
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setTotScore(0);
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         if(!player.getCountry().startsWith("Bangla")) foreign++;
                         price += player.getPrice();
@@ -365,17 +408,20 @@ public class CreatingTeam2 extends AppCompatActivity {
             TextView team = view.findViewById(R.id.pTeam);
             TextView prices = view.findViewById(R.id.price);
 
-            image.setImageResource(R.drawable.anon);
             price.setText("Price");
             //Log.d(TAG,Integer.toString(pplayers.size()));
             //Log.d(TAG,Integer.toString(i));
             if(i<pplayers.size()) {
+                String url = pplayers.get(i).getUrl();
+                loadimage(url,image);
                 name.setText(pplayers.get(i).getName());
                 roll.setText(pplayers.get(i).getRole());
                 team.setText(pplayers.get(i).getTeam());
                 prices.setText(Integer.toString(pplayers.get(i).getPrice())+"M$");
              }
              else{
+
+                image.setImageResource(R.drawable.anon);
                 name.setText("Add Player");
                 roll.setText("");
                 team.setText("");
@@ -384,6 +430,21 @@ public class CreatingTeam2 extends AppCompatActivity {
             }
             return view;
         }
+    }
+
+    void loadimage(String url,ImageView imageView){
+        Picasso.with(this).load(url).placeholder(R.drawable.anon).error(R.drawable.anon)
+                .into(imageView, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 
     public void showProgressDialog() {
@@ -424,7 +485,6 @@ public class CreatingTeam2 extends AppCompatActivity {
     public void hideProgressDialog() {
 
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
-
             mProgressDialog.dismiss();
 
         }

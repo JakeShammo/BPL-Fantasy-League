@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -123,6 +124,7 @@ public class PlayerList extends AppCompatActivity {
                     player.setName((String)ds.child("Name").getValue());
                     player.setRole((String)ds.child("Role").getValue());
                     player.setTeam((String)ds.child("Team").getValue());
+                    player.setUrl((String)ds.child("ImageURL").getValue());
                     player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
                     player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                     player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
@@ -212,8 +214,10 @@ public class PlayerList extends AppCompatActivity {
                 } catch(Exception ex) {/* */}
 
                 startIntent.putExtra("userId",userId);
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 hideProgressDialog();
                 startActivity(startIntent);
+                finish();
 
             }
         });
@@ -246,8 +250,9 @@ public class PlayerList extends AppCompatActivity {
             TextView price = view.findViewById(R.id.pPrice);
             TextView team = view.findViewById(R.id.pTeam);
             TextView prices = view.findViewById(R.id.price);
-
-            image.setImageResource(R.drawable.anon);
+            String url = filtered.get(i).getUrl();
+            loadimage(url,image);
+            //image.setImageResource(R.drawable.anon);
             name.setText(filtered.get(i).getName());
             roll.setText(filtered.get(i).getRole());
             team.setText(filtered.get(i).getTeam());
@@ -259,6 +264,21 @@ public class PlayerList extends AppCompatActivity {
 
             return view;
         }
+
+    }
+    void loadimage(String url,ImageView imageView){
+        Picasso.with(this).load(url).placeholder(R.drawable.anon).error(R.drawable.anon)
+                .into(imageView, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 
     public void showProgressDialog() {
@@ -279,6 +299,8 @@ public class PlayerList extends AppCompatActivity {
         mProgressDialog.show();
 
     }
+
+
 
     @Override
     protected void onStop() {

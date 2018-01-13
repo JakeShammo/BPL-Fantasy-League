@@ -85,6 +85,8 @@ public class CreateAccountActivity extends AppCompatActivity implements
                             Toast.makeText(CreateAccountActivity.this,"Account Created",Toast.LENGTH_SHORT).show();
                             Intent startIntent = new Intent(CreateAccountActivity.this,WelcomeActiviy.class);
                             startIntent.putExtra("userId",userId);
+                            startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            hideProgressDialog();
                             startActivity(startIntent);
                             finish();
                         }

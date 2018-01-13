@@ -10,8 +10,19 @@ public class Players {
     int age,id,price,totScore;
     String Role;
     String Team;
+    String url;
+
+
 
     public Players() {
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public void setName(String name) {

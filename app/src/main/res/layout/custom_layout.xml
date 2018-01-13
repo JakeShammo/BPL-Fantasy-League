@@ -45,13 +45,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:layout_alignLeft="@id/pName"
-        android:layout_marginLeft="250dp"
+        android:layout_marginLeft="190dp"
         android:textColor="#000"
 
-        android:text="Price"
-        android:textSize="28dp" />
+        android:text="Price:"
+        android:textSize="24dp" />
 
     <TextView
         android:id="@+id/pTeam"
@@ -70,11 +70,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="58dp"
         android:layout_alignLeft="@id/pName"
-        android:layout_marginLeft="270dp"
+        android:layout_marginLeft="255dp"
         android:textColor="#000"
 
-        android:text="10"
-        android:textSize="28dp" />
+        android:text="10M$"
+        android:textSize="26dp" />
 </RelativeLayout>

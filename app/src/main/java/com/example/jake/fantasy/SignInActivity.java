@@ -104,7 +104,9 @@ public class SignInActivity extends AppCompatActivity {
                 if (total==11){
                     Intent startIntent = new Intent(SignInActivity.this,TabbedActiviy.class);
                     startIntent.putExtra("userId",userId);
+                    startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(startIntent);
+                    finish();
                                         /*---you might want to call finish() method here but never do that
                                         ----call finish() method from outside the listener---
                                          */
@@ -112,7 +114,9 @@ public class SignInActivity extends AppCompatActivity {
                 else{
                     Intent startIntent = new Intent(SignInActivity.this,CreatingTeam2.class);
                     startIntent.putExtra("userId",userId);
+                    startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(startIntent);
+                    finish();
                 }
 
             }

@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -86,8 +87,6 @@ public class TeamFragment extends Fragment {
             public void onDataChange(DataSnapshot data) {
                 DataSnapshot dataSnapshot = data.child("USERS").child(userId);
                 //TextView balance = findViewById(R.id.total_balance_value);
-                money = Integer.parseInt(dataSnapshot.child("Score").getValue().toString());
-                point.setText("Points: "+Integer.toString(money));
                 teamName = (String)dataSnapshot.child("TeamName").getValue();
                 //Log.d(TAG,teamName);
                 tmName.setText(teamName);
@@ -110,7 +109,7 @@ public class TeamFragment extends Fragment {
                 //dref.child("USERS").child(userId).child("TotalSelected").setValue(Integer.toString(total));
                 //Log.d(TAG,"dsded");
                 //Log.d(TAG,Integer.toString(batsel));
-
+                int teamScore = 0;
                 //if(batsel>0 && bats.size()<batsel){
                     for(int i=0;i<batno;i++){
                         Players player = new Players();
@@ -118,13 +117,14 @@ public class TeamFragment extends Fragment {
                         Log.d(TAG,ds.getValue().toString());
                         String pid = ds.child("PID").getValue().toString();
                         player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
-
+                        teamScore += player.getTotScore();
                         ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -140,6 +140,7 @@ public class TeamFragment extends Fragment {
                         Players player = new Players();
                         String pid = ds.child("PID").getValue().toString();
                         player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
+                        teamScore += player.getTotScore();
                         ds = data.child("PLAYERS").child(pid);
 
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
@@ -147,6 +148,7 @@ public class TeamFragment extends Fragment {
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -161,12 +163,14 @@ public class TeamFragment extends Fragment {
                         Players player = new Players();
                         String pid = ds.child("PID").getValue().toString();
                         player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
+                        teamScore += player.getTotScore();
                         ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
@@ -182,12 +186,14 @@ public class TeamFragment extends Fragment {
                         Players player = new Players();
                         String pid = ds.child("PID").getValue().toString();
                         player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
+                        teamScore += player.getTotScore();
                         ds = data.child("PLAYERS").child(pid);
                         player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                         player.setCountry((String)ds.child("Country").getValue());
                         player.setName((String)ds.child("Name").getValue());
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
+                        player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
                        // if(!player.getCountry().startsWith("Bangla")) foreign++;
@@ -195,6 +201,7 @@ public class TeamFragment extends Fragment {
                         alls.add(player);
 
                     }
+
 
                /* }
                 if(k==0){
@@ -205,6 +212,9 @@ public class TeamFragment extends Fragment {
 
                 mone.setText(Integer.toString(money-price)+"M$");
                 */
+                dref.child("USERS").child(userId).child("Score").setValue(teamScore);
+                point.setText("Points: "+Integer.toString(teamScore));
+
 
                 generateLists();
             }
@@ -269,7 +279,8 @@ public class TeamFragment extends Fragment {
             TextView team = view.findViewById(R.id.pTeam);
             TextView prices = view.findViewById(R.id.price);
 
-            image.setImageResource(R.drawable.anon);
+            String url = pplayers.get(i).getUrl();
+            loadimage(url,image);
             price.setText("Point");
                 name.setText(pplayers.get(i).getName());
                 roll.setText(pplayers.get(i).getRole());
@@ -279,6 +290,22 @@ public class TeamFragment extends Fragment {
             return view;
         }
     }
+
+    void loadimage(String url,ImageView imageView){
+        Picasso.with(getActivity()).load(url).placeholder(R.drawable.anon).error(R.drawable.anon)
+                .into(imageView, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+    }
+
     public void showProgressDialog() {
 
         if (mProgressDialog == null) {
