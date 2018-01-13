@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/statType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Batting Statistics"
+        android:textSize="25dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/statMatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="8dp"
+        android:text="Match"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+    <TextView
+        android:id="@+id/statRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_toRightOf="@+id/statMatch"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Run"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+    <TextView
+        android:id="@+id/statBall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_toRightOf="@+id/statRun"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Ball"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/statAvg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_toRightOf="@+id/statBall"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Average"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/statStRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_toRightOf="@+id/statAvg"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:text="St.Rate"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+    <TextView
+        android:id="@+id/statMatchV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="32dp"
+        android:layout_alignRight="@id/statMatch"
+        android:text="2"
+        android:textSize="20dp"/>
+    <TextView
+        android:id="@+id/statRunV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_alignRight="@id/statRun"
+        android:layout_marginTop="32dp"
+        android:text="43"
+        android:textSize="20dp"/>
+    <TextView
+        android:id="@+id/statBallV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_alignRight="@id/statBall"
+        android:layout_marginTop="32dp"
+        android:text="39"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/statAvgV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_alignRight="@id/statAvg"
+        android:layout_marginTop="32dp"
+        android:text="14.5"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/statStRateV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statType"
+        android:layout_alignRight="@id/statStRate"
+        android:layout_marginTop="32dp"
+        android:text="123.5"
+        android:textSize="20dp"/>
+
+
+
+</RelativeLayout>

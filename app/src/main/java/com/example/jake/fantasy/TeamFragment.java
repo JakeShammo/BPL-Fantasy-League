@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -126,7 +127,7 @@ public class TeamFragment extends Fragment {
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
-                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        player.setId(Integer.parseInt(pid));
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;
                         //price += player.getPrice();
                         bats.add(player);
@@ -150,7 +151,7 @@ public class TeamFragment extends Fragment {
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
-                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        player.setId(Integer.parseInt(pid));
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;
                         //price += player.getPrice();
                         bowls.add(player);
@@ -173,7 +174,7 @@ public class TeamFragment extends Fragment {
                         player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
-                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        player.setId(Integer.parseInt(pid));
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;
                        // price += player.getPrice();
                         wkts.add(player);
@@ -195,7 +196,7 @@ public class TeamFragment extends Fragment {
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setUrl((String)ds.child("ImageURL").getValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
-                        player.setId(((Long) ds.child("PlayerId").getValue()).intValue());
+                        player.setId(Integer.parseInt(pid));
                        // if(!player.getCountry().startsWith("Bangla")) foreign++;
                        // price += player.getPrice();
                         alls.add(player);
@@ -243,6 +244,47 @@ public class TeamFragment extends Fragment {
         Utility.setListViewHeightBasedOnChildren(wktL);
         Utility.setListViewHeightBasedOnChildren(allL);
         Utility.setListViewHeightBasedOnChildren(bolL);
+        batL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(getActivity(),PlayerStat.class);
+                startIntent.putExtra("PlayerId",Integer.toString(bats.get(position).getId()));
+                //startIntent.putExtra("Money",Integer.toString(money));
+                startActivity(startIntent);
+            }
+        });
+        wktL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(getActivity(),PlayerStat.class);
+                startIntent.putExtra("PlayerId",Integer.toString(wkts.get(position).getId()));
+                //startIntent.putExtra("Money",Integer.toString(money));
+                startActivity(startIntent);
+            }
+        });
+        bolL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(getActivity(),PlayerStat.class);
+                startIntent.putExtra("PlayerId",Integer.toString(bowls.get(position).getId()));
+                //startIntent.putExtra("Money",Integer.toString(money));
+                startActivity(startIntent);
+            }
+        });
+        allL.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(getActivity(),PlayerStat.class);
+                startIntent.putExtra("PlayerId",Integer.toString(alls.get(position).getId()));
+                //startIntent.putExtra("Money",Integer.toString(money));
+                startActivity(startIntent);
+            }
+        });
+
         hideProgressDialog();
     }
 

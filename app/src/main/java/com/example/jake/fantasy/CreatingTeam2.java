@@ -375,6 +375,7 @@ public class CreatingTeam2 extends AppCompatActivity {
         //Log.d(TAG, "Ekhane1");
     }
 
+
     class CustomAdapter extends BaseAdapter {
 
         ArrayList<Players> pplayers;
