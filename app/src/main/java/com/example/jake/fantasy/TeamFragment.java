@@ -38,7 +38,7 @@ public class TeamFragment extends Fragment {
     ArrayList<Players> bats,bowls,alls,wkts;
     ListView batL,bolL,allL,wktL;
     String userId,teamName,teamMotto;
-    Button edit;
+    Button edit,stats;
 
     ValueEventListener mListener;
     public ProgressDialog mProgressDialog;
@@ -63,12 +63,24 @@ public class TeamFragment extends Fragment {
         wktL = view.findViewById(R.id.wktList1);
         point = view.findViewById(R.id.points);
         edit = view.findViewById(R.id.editTeam);
+        stats = view.findViewById(R.id.viewStats);
         edit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 //signIn.setBackgroundColor(Color.GRAY);
                 Intent startIntent = new Intent(getActivity(),CreatingTeam2.class);
+                startIntent.putExtra("userId",userId);
+
+                startActivity(startIntent);
+            }
+        });
+        stats.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //signIn.setBackgroundColor(Color.GRAY);
+                Intent startIntent = new Intent(getActivity(),TeamStats.class);
                 startIntent.putExtra("userId",userId);
 
                 startActivity(startIntent);
@@ -172,7 +184,6 @@ public class TeamFragment extends Fragment {
                         player.setRole((String)ds.child("Role").getValue());
                         player.setTeam((String)ds.child("Team").getValue());
                         player.setUrl((String)ds.child("ImageURL").getValue());
-                        player.setTotScore(((Long) ds.child("TotScore").getValue()).intValue());
                         player.setPrice(((Long) ds.child("Price").getValue()).intValue());
                         player.setId(Integer.parseInt(pid));
                         //if(!player.getCountry().startsWith("Bangla")) foreign++;

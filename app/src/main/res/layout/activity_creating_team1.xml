@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="430dp"
         android:layout_weight="1"
-        android:text="Team Formation:"
+        android:text="Bowler:"
         android:textColor="#000"
         android:textSize="25dp" />
 
@@ -133,7 +133,7 @@
         android:id="@+id/selectSquad"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="60dp"
         android:layout_marginTop="500dp"
         android:text="Move to Select Squad"
         android:textSize="20dp"

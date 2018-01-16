@@ -88,22 +88,34 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
         if(mAuth.getCurrentUser()!=null){
 
+            Log.d("slow","ashche1");
             updateUI();
         }
     }
     void updateUI(){
         //Log.d(TAG, "signInWithEmail:success");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        Log.d("slow","ashche2");
         userId=user.getUid();
+
+        Log.d("slow","ashche3");
         Toast.makeText(SignInActivity.this,"Signed In",Toast.LENGTH_SHORT).show();
         db= FirebaseDatabase.getInstance().getReference("USERS/"+userId).child("TotalSelected");
+
+        Log.d("slow","ashche4");
         mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.d("slow","ashche5");
                 total = Integer.parseInt(dataSnapshot.getValue().toString());
+
+                Log.d("slow","ashche6");
                 if (total==11){
                     Intent startIntent = new Intent(SignInActivity.this,TabbedActiviy.class);
                     startIntent.putExtra("userId",userId);
+                    Log.d("slow","ashche7");
                     startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(startIntent);
                     finish();
@@ -128,6 +140,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         };
 
+        Log.d("slow","ashchemaj");
         db.addValueEventListener(mListener);
         //db.removeEventListener(mListener);
         //finish();

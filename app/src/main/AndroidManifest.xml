@@ -29,7 +29,8 @@
         <activity android:name=".PlayerList" />
         <activity android:name=".CreatingTeam2" />
         <activity android:name=".FilterActivity" />
-        <activity android:name=".PlayerStat"></activity>
+        <activity android:name=".PlayerStat" />
+        <activity android:name=".TeamStats"></activity>
     </application>
 
 </manifest>
