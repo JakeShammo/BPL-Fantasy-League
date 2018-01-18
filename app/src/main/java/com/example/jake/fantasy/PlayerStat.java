@@ -10,6 +10,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.jar.Attributes;
 
 public class PlayerStat extends AppCompatActivity {
     ListView listView;
@@ -31,7 +39,11 @@ public class PlayerStat extends AppCompatActivity {
     String roles;
     DatabaseReference dref;
     ValueEventListener mListener;
-    String pid;
+    String pid;BarChart barChart;
+    ArrayList <BarEntry> barEntries;
+    BarDataSet dataSet;
+    ArrayList<String> labels;
+    BarData barData;
     int how;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +55,9 @@ public class PlayerStat extends AppCompatActivity {
         team = findViewById(R.id.statTeam);
         role = findViewById(R.id.statRole);
         score = findViewById(R.id.statScore);
+        barChart = findViewById(R.id.playerBar);
+        barEntries = new ArrayList<>();
+        labels = new ArrayList<>();
         pid=getIntent().getStringExtra("PlayerId");
 
         dref = FirebaseDatabase.getInstance().getReference();
@@ -58,21 +73,63 @@ public class PlayerStat extends AppCompatActivity {
                 loadimage(url,image);
                 role.setText(roles);
                 score.setText("Total Points: "+ds.child("TotScore").getValue().toString());
+                int j = 0;
+                ArrayList<Float> scoresForBar = new ArrayList<>();
                 if(!roles.equals("Bowl")) {
                     matcht = Integer.parseInt(ds.child("BatPerform").child("Match").getValue().toString());
                     runt = Integer.parseInt(ds.child("BatPerform").child("Run").getValue().toString());
                     ball = Integer.parseInt(ds.child("BatPerform").child("Ball").getValue().toString());
+
+                    for(DataSnapshot dss : ds.child("BatScores").getChildren()){
+                        scoresForBar.add(Float.parseFloat(dss.child("Score").getValue().toString()));
+                        j++;
+                    }
                 }
                 if(roles.equals("Bowl") || roles.equals("All")){
                     matchl = Integer.parseInt(ds.child("BowlPerform").child("Match").getValue().toString());
                     runl = Integer.parseInt(ds.child("BowlPerform").child("Run").getValue().toString());
                     over = Integer.parseInt(ds.child("BowlPerform").child("Over").getValue().toString());
                     wkt = Integer.parseInt(ds.child("BowlPerform").child("Wkt").getValue().toString());
+                    j = 0;
+                    for(DataSnapshot dss : ds.child("BowlScores").getChildren()){
+                        if(j<scoresForBar.size()){
+                            scoresForBar.set(j,scoresForBar.get(j)+Float.parseFloat(dss.child("Score").getValue().toString()));
+                        }
+                        else{
+                            scoresForBar.add(Float.parseFloat(dss.child("Score").getValue().toString()));
+
+                        }
+                        j++;
+                    }
                 }
                 if(roles.equals("All")){
                     how = 2;
                 }
                 else how = 1;
+                for(int i=0;i<scoresForBar.size();i++){
+
+                    barEntries.add(new BarEntry(i,scoresForBar.get(i)));
+                    labels.add("Match "+Integer.toString(i+1));
+                }
+                dataSet = new BarDataSet(barEntries, "Points");
+                barData = new BarData(dataSet);
+                barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+                YAxis y = barChart.getAxisLeft();
+                y.setLabelCount(4);
+                y.setAxisMaximum(100);
+                y.setAxisMinimum(0);
+                YAxis rightYAxis = barChart.getAxisRight();
+                rightYAxis.setEnabled(false);
+                dataSet.setDrawValues(true);
+                barChart.setDescription(null);
+                barChart.setDrawGridBackground(false);
+                XAxis xAxis = barChart.getXAxis();
+                xAxis.setGranularity(1f);
+                xAxis.setGranularityEnabled(true);
+                barChart.animateY(1000);
+                barChart.setDrawValueAboveBar(true);
+                barChart.setData(barData);
+                barChart.invalidate();
                 generateList();
             }
 

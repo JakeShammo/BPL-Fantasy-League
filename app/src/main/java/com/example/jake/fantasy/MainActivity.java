@@ -6,11 +6,19 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewStructure;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,12 +35,12 @@ public class MainActivity extends AppCompatActivity {
         actionBar.hide();
         mAuth = FirebaseAuth.getInstance();
         tv1 = findViewById(R.id.textView);
-
         tv2 = findViewById(R.id.textView2);
         tf1 = Typeface.createFromAsset(getAssets(),  "abc.ttf");
 
         tv1.setTypeface(tf1);
         tv2.setTypeface(tf1);
+
         signIn = findViewById(R.id.button);
         createA = findViewById(R.id.button2);
         //signIn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));

@@ -98,7 +98,7 @@ public class PlayerList extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Log.d(TAG, "Dhuke");
+                //Log.d(TAG, "Dhuke");
                 if(role.equals("Bat")) {
                     par = Integer.parseInt(dataSnapshot.child("USERS").child(userId).child("BatsmenSel").getValue().toString());
 
@@ -153,7 +153,7 @@ public class PlayerList extends AppCompatActivity {
         filtered = new ArrayList<>();
         for(int i=0;i<players.size();i++){
             Players p = players.get(i);
-            if((role.equals("Any") || role.equals(p.getRole()) || (role.equals("Bat") && p.getRole().equals("Wkt"))) && (name.equals("Any") || p.getName().contains(name))&&
+            if((role.equals("Any") || role.equals(p.getRole()) || (role.equals("Bat") && p.getRole().equals("Wkt"))) && (name.equals("Any") || p.getName().toLowerCase().contains(name.toLowerCase()))&&
             (country.equals("Any") || country.equals(p.getCountry())) && (team.equals("Any") || p.getTeam().startsWith(team))
                     && ((maxPrice.equals("Any") || p.getPrice()<=Integer.parseInt(maxPrice))) &&
                     ((minPrice.equals("Any") || p.getPrice()>=Integer.parseInt(minPrice))) && (!pids.contains(p.getId())))

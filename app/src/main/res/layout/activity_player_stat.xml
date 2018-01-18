@@ -67,6 +67,23 @@
         android:layout_marginTop="20dp"
         android:scrollbars="vertical"
         />
+    <TextView
+        android:id="@+id/mbp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/statList"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:text="Points by Match:"
+        android:textSize="24dp"
+        android:textColor="#000"/>
+    <com.github.mikephil.charting.charts.BarChart
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mbp1"
+        android:layout_marginTop="10dp"
+        android:id="@+id/playerBar">
+    </com.github.mikephil.charting.charts.BarChart>
 
 
 </RelativeLayout>

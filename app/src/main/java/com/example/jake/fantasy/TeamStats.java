@@ -29,8 +29,8 @@ public class TeamStats extends AppCompatActivity {
     DatabaseReference dref;
     TextView tmMotto,tmName,point,bestPlayer,worstPlayer;
     String userId,teamName,teamMotto;
-    BarChart barChart;
     ValueEventListener mListener;
+    BarChart barChart;
     ArrayList <BarEntry> barEntries;
     BarDataSet dataSet;
     ArrayList<String> labels;
@@ -158,13 +158,18 @@ public class TeamStats extends AppCompatActivity {
                     labels.add("Match "+Integer.toString(++j));
 
                 }
-                dataSet = new BarDataSet(barEntries, "Scores");
+                dataSet = new BarDataSet(barEntries, "Points");
                 barData = new BarData(dataSet);
                 barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
-                barChart.getAxisLeft().setAxisMaximum(300f);
-                barChart.getAxisLeft().setAxisMaximum(0f);
+                YAxis y = barChart.getAxisLeft();
+                y.setLabelCount(5);
+                y.setAxisMaximum(200);
+                y.setAxisMinimum(0);
+                YAxis rightYAxis = barChart.getAxisRight();
+                rightYAxis.setEnabled(false);
                 dataSet.setDrawValues(true);
                 barChart.setDescription(null);
+                barChart.setDrawGridBackground(false);
                 XAxis xAxis = barChart.getXAxis();
                 xAxis.setGranularity(1f);
                 xAxis.setGranularityEnabled(true);

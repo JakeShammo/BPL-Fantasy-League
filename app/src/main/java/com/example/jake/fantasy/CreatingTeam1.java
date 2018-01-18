@@ -13,9 +13,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class CreatingTeam1 extends AppCompatActivity {
@@ -28,8 +31,10 @@ public class CreatingTeam1 extends AppCompatActivity {
     String []bolOpt = {"2","3","4","5"};
     FirebaseAuth mAuth;
     DatabaseReference dref;
+    ValueEventListener mListener;
     ArrayAdapter <String> arrayBat, arrayBol,arrayWkt,arrayAll;
     MaterialBetterSpinner batSpin, bolSpin, wktSpin,allSpin;
+    int total, batsel,bolsel,wktsel, allsel;
     private static final String TAG = "playerlist";
     Button select;
     @Override
@@ -57,7 +62,33 @@ public class CreatingTeam1 extends AppCompatActivity {
         bolSpin.setText("3");
         wktSpin.setText("1");
         final String userId=getIntent().getStringExtra("userId");
+        dref= FirebaseDatabase.getInstance().getReference();
+        dref = dref.child("USERS").child(userId);
         mAuth = FirebaseAuth.getInstance();
+        mListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.d("slow","ashche5");
+                total = Integer.parseInt(dataSnapshot.child("TotalSelected").getValue().toString());
+                if(total == 11) {
+                    tname.setText(dataSnapshot.child("TeamName").getValue().toString());
+                    tmotto.setText(dataSnapshot.child("TeamMotto").getValue().toString());
+                    batsel = Integer.parseInt(dataSnapshot.child("BatsmenSel").getValue().toString());
+                    bolsel = Integer.parseInt(dataSnapshot.child("BowlerSel").getValue().toString());
+                    wktsel = Integer.parseInt(dataSnapshot.child("WktKeeperSel").getValue().toString());
+                    allsel = Integer.parseInt(dataSnapshot.child("AllrounderSel").getValue().toString());
+                }
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        dref.addValueEventListener(mListener);
         select = findViewById(R.id.selectSquad);
         select.setOnClickListener(new View.OnClickListener() {
 
@@ -67,37 +98,57 @@ public class CreatingTeam1 extends AppCompatActivity {
 
                     return;
                 }
-                String name = tname.getText().toString();
-                String motto = tmotto.getText().toString();
-                int bat = Integer.parseInt(batSpin.getText().toString());
-                int all = Integer.parseInt(allSpin.getText().toString());
-                int wkt = Integer.parseInt(wktSpin.getText().toString());
-                int bol = Integer.parseInt(bolSpin.getText().toString());
+                final String name = tname.getText().toString();
+                final String motto = tmotto.getText().toString();
+                final int bat = Integer.parseInt(batSpin.getText().toString());
+                final int all = Integer.parseInt(allSpin.getText().toString());
+                final int wkt = Integer.parseInt(wktSpin.getText().toString());
+                final int bol = Integer.parseInt(bolSpin.getText().toString());
                 if(bat+all+wkt+bol!=11){
                     Toast.makeText(CreatingTeam1.this, "Invalid formation",
                             Toast.LENGTH_SHORT).show();
                     return;
 
                 }
-                dref= FirebaseDatabase.getInstance().getReference();
-                dref = dref.child("USERS").child(userId);
-                dref.child("Batsmen").setValue(Integer.toString(bat));
-                dref.child("Bowler").setValue(Integer.toString(bol));
-                dref.child("Allrounder").setValue(Integer.toString(all));
-                dref.child("WktKeeper").setValue(Integer.toString(wkt));
-                dref.child("TeamName").setValue(name);
-                dref.child("TeamMotto").setValue(motto);
-                dref.child("BatsmenSel").setValue(Integer.toString(0));
-                dref.child("BowlerSel").setValue(Integer.toString(0));
-                dref.child("AllrounderSel").setValue(Integer.toString(0));
-                dref.child("WktKeeperSel").setValue(Integer.toString(0));
+                //int total;
+
+
+                        Log.d("slow","ashche6");
+                        if (total!=11){
+                            dref.child("Batsmen").setValue(Integer.toString(bat));
+                            dref.child("Bowler").setValue(Integer.toString(bol));
+                            dref.child("Allrounder").setValue(Integer.toString(all));
+                            dref.child("WktKeeper").setValue(Integer.toString(wkt));
+                            dref.child("TeamName").setValue(name);
+                            dref.child("TeamMotto").setValue(motto);
+                            dref.child("BatsmenSel").setValue(Integer.toString(0));
+                            dref.child("BowlerSel").setValue(Integer.toString(0));
+                            dref.child("AllrounderSel").setValue(Integer.toString(0));
+                            dref.child("WktKeeperSel").setValue(Integer.toString(0));
+
+                        }
+                        else{
+                            dref.child("Batsmen").setValue(Integer.toString(bat));
+                            dref.child("Bowler").setValue(Integer.toString(bol));
+                            dref.child("Allrounder").setValue(Integer.toString(all));
+                            dref.child("WktKeeper").setValue(Integer.toString(wkt));
+                            dref.child("TeamName").setValue(name);
+                            dref.child("TeamMotto").setValue(motto);
+                            dref.child("BatsmenSel").setValue(Integer.toString(Math.min(batsel,bat)));
+                            dref.child("BowlerSel").setValue(Integer.toString(Math.min(bolsel,bol)));
+                            dref.child("AllrounderSel").setValue(Integer.toString(Math.min(allsel,all)));
+                            dref.child("WktKeeperSel").setValue(Integer.toString(1));
+                        }
                 Intent startIntent = new Intent(CreatingTeam1.this,CreatingTeam2.class);
                 startIntent.putExtra("userId",userId);
 
-                Log.d(TAG,"intent");
+                //Log.d(TAG,"intent");
                 startActivity(startIntent);
 
-                Log.d(TAG,"intent");
+                dref.addValueEventListener(mListener);
+
+
+                //Log.d(TAG,"intent");
 
 
             }
@@ -124,5 +175,20 @@ public class CreatingTeam1 extends AppCompatActivity {
             tname.setError(null);
         }
         return valid;
+    }
+    @Override
+    protected void onStop() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mListener != null && dref!=null) {
+            dref.removeEventListener(mListener);
+        }
+        super.onPause();
     }
 }

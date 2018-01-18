@@ -69,7 +69,7 @@ public class TeamFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //signIn.setBackgroundColor(Color.GRAY);
-                Intent startIntent = new Intent(getActivity(),CreatingTeam2.class);
+                Intent startIntent = new Intent(getActivity(),CreatingTeam1.class);
                 startIntent.putExtra("userId",userId);
 
                 startActivity(startIntent);
@@ -127,7 +127,7 @@ public class TeamFragment extends Fragment {
                     for(int i=0;i<batno;i++){
                         Players player = new Players();
                         DataSnapshot ds = dataSnapshot.child("Bat").child(Integer.toString(i));
-                        Log.d(TAG,ds.getValue().toString());
+                        //Log.d(TAG,ds.getValue().toString());
                         String pid = ds.child("PID").getValue().toString();
                         player.setTotScore(((Long) ds.child("Score").getValue()).intValue());
                         teamScore += player.getTotScore();
