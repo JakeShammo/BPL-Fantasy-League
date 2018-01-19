@@ -43,7 +43,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".OtherTeams"></activity>
+        <activity android:name=".OtherTeams" />
+        <activity android:name=".RulesActivity"></activity>
     </application>
 
 </manifest>

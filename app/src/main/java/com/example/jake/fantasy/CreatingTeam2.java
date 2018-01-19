@@ -111,6 +111,10 @@ public class CreatingTeam2 extends AppCompatActivity {
                 startActivity(intent2);
                 finish();
                 break;
+            case R.id.Rules:
+                Intent intent3= new Intent(CreatingTeam2.this,RulesActivity.class);
+                startActivity(intent3);
+                break;
             default:
                 break;
         }

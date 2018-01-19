@@ -45,6 +45,15 @@ public class WelcomeActiviy extends AppCompatActivity {
 
             }
         });
+        tv4.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                //signIn.setBackgroundColor(Color.GRAY);
+                startActivity(new Intent(WelcomeActiviy.this, RulesActivity.class));
+
+            }
+        });
 
     }
 }

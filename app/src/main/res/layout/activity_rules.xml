@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jake.fantasy.RulesActivity">
+
+    <TextView
+        android:id="@+id/tbrule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team Building"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="30dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/tbrule1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tbrule"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+    <TextView
+        android:id="@+id/Srule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scoring"
+        android:layout_below="@id/tbrule1"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="30dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/Srule1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Srule"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/wrule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Winning"
+        android:layout_below="@id/Srule1"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="30dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/wrule1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrule"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="20dp"
+        android:textColor="#000"/>
+    <Button
+        android:id="@+id/gob"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/wrule1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFF"
+        android:text="Go Back"
+        android:textSize="20dp"/>
+</RelativeLayout>
+</ScrollView>

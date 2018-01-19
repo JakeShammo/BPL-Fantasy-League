@@ -127,6 +127,10 @@ public class TabbedActiviy extends AppCompatActivity {
                 startActivity(intent2);
                 finish();
                 break;
+            case R.id.Rules:
+                Intent intent3= new Intent(TabbedActiviy.this,RulesActivity.class);
+                startActivity(intent3);
+                break;
             default:
                 break;
         }
