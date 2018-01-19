@@ -1,5 +1,6 @@
 package com.example.jake.fantasy;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Typeface tf1;
     Button signIn, createA;
     FirebaseAuth mAuth;
+    public ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
         tv1.setTypeface(tf1);
         tv2.setTypeface(tf1);
+        showProgressDialog();
         UpdateScore updateScore = new UpdateScore();
         updateScore.update();
+        hideProgressDialog();
         signIn = findViewById(R.id.button);
         createA = findViewById(R.id.button2);
         //signIn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //signIn.setBackgroundColor(Color.GRAY);
-                startActivity(new Intent(MainActivity.this, WelcomeActiviy.class));
+                startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
 
             }
         });
@@ -72,6 +76,33 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
 
+
+    }
+
+    public void showProgressDialog() {
+
+        if (mProgressDialog == null) {
+
+            mProgressDialog = new ProgressDialog(MainActivity.this);
+
+            mProgressDialog.setMessage("Updating Scores.");
+
+            mProgressDialog.setIndeterminate(true);
+
+        }
+
+
+
+        mProgressDialog.show();
+
+    }
+    public void hideProgressDialog() {
+
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+
+            mProgressDialog.dismiss();
+
+        }
 
     }
 }

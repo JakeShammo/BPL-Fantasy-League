@@ -120,6 +120,7 @@ public class CreatingTeam1 extends AppCompatActivity {
                             dref.child("Allrounder").setValue(Integer.toString(all));
                             dref.child("WktKeeper").setValue(Integer.toString(wkt));
                             dref.child("TeamName").setValue(name);
+                            dref.child("Rank").setValue(0);
                             dref.child("TeamMotto").setValue(motto);
                             dref.child("BatsmenSel").setValue(Integer.toString(0));
                             dref.child("BowlerSel").setValue(Integer.toString(0));

@@ -34,6 +34,7 @@ public class UpdateScore {
     ArrayList<Integer> Wkt = new ArrayList<>();
     DatabaseReference dref;
     ArrayList<Integer> scores = new ArrayList<>();
+    int mm = 8;
     public UpdateScore() {
     }
 
@@ -60,16 +61,24 @@ public class UpdateScore {
                         int ball = Integer.parseInt(snapshot.child("BatPerform").child("Ball").getValue().toString());
                         int totScore = Integer.parseInt(snapshot.child("TotScore").getValue().toString());
                         int id = Integer.parseInt(snapshot.child("PlayerId").getValue().toString()) - 1;
-                        pid.add(id);
+
                         Log.d("ds","Updating Data of id "+ Integer.toString(id));
-                        mDatabase.child(Integer.toString(id)).child("BatPerform").child("Match").setValue(1);
-                        mDatabase.child(Integer.toString(id)).child("BatPerform").child("Ball").setValue(Ball.get(j));
-                        mDatabase.child(Integer.toString(id)).child("BatPerform").child("Run").setValue(Run.get(j));
-                        int score = Run.get(j) * Run.get(j)/Ball.get(j);
-                        scores.add(score);
-                        mDatabase.child(Integer.toString(id)).child("BatScores").child("0").child("Mid").setValue(0);
-                        mDatabase.child(Integer.toString(id)).child("BatScores").child("0").child("Score").setValue(score);
-                        mDatabase.child(Integer.toString(id)).child("TotScore").setValue(score);
+                         mDatabase.child(Integer.toString(id)).child("BatPerform").child("Match").setValue(match + 1);
+                         mDatabase.child(Integer.toString(id)).child("BatPerform").child("Ball").setValue(ball + Ball.get(j));
+                        mDatabase.child(Integer.toString(id)).child("BatPerform").child("Run").setValue(run + Run.get(j));
+                        int score;
+                        if(Ball.get(j)!=0) score = Run.get(j) * Run.get(j)/Ball.get(j);
+                        else score = 0;
+                        if(pid.contains(id)){
+                            scores.set(pid.indexOf(id),scores.get(pid.indexOf(id))+score);
+                        }
+                        else {
+                            pid.add(id);
+                            scores.add(score);
+                        }
+                        mDatabase.child(Integer.toString(id)).child("BatScores").child(Integer.toString(match)).child("Mid").setValue(mm);
+                        mDatabase.child(Integer.toString(id)).child("BatScores").child(Integer.toString(match)).child("Score").setValue(score);
+                        mDatabase.child(Integer.toString(id)).child("TotScore").setValue(totScore+scores.get(pid.indexOf(id)));
 
 
                     }
@@ -82,6 +91,10 @@ public class UpdateScore {
 
             });
         }
+        Log.d("ds","bat sesh");
+
+        try{ Thread.sleep(3000); }catch(InterruptedException e){ }
+        Log.d("ds","bol shuru");
 
         for(int i=0;i<bName.size();i++) {
             Log.d("ds", bName.get(i) + " " + Integer.toString(bRun.get(i)) + " " + Integer.toString(Over.get(i)));
@@ -99,10 +112,10 @@ public class UpdateScore {
                         int totScore = Integer.parseInt(snapshot.child("TotScore").getValue().toString());
                         int id = Integer.parseInt(snapshot.child("PlayerId").getValue().toString()) - 1;
                         Log.d("ds","Updating Data of id "+ Integer.toString(id));
-                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Match").setValue(1);
-                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Over").setValue(Over.get(j));
-                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Run").setValue(bRun.get(j));
-                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Wkt").setValue(Wkt.get(j));
+                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Match").setValue(match + 1);
+                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Over").setValue(over + Over.get(j));
+                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Run").setValue(run + bRun.get(j));
+                        mDatabase.child(Integer.toString(id)).child("BowlPerform").child("Wkt").setValue(wkt + Wkt.get(j));
                         int score = Wkt.get(j)*15 + (7*Over.get(j)-bRun.get(j));
                         if(score<0) score = 0;
                         if(pid.contains(id)){
@@ -112,9 +125,9 @@ public class UpdateScore {
                             pid.add(id);
                             scores.add(score);
                         }
-                        mDatabase.child(Integer.toString(id)).child("BowlScores").child("0").child("Mid").setValue(0);
-                        mDatabase.child(Integer.toString(id)).child("BowlScores").child("0").child("Score").setValue(score);
-                        mDatabase.child(Integer.toString(id)).child("TotScore").setValue(scores.get(pid.indexOf(id)));
+                        mDatabase.child(Integer.toString(id)).child("BowlScores").child(Integer.toString(match)).child("Mid").setValue(mm);
+                        mDatabase.child(Integer.toString(id)).child("BowlScores").child(Integer.toString(match)).child("Score").setValue(score);
+                        mDatabase.child(Integer.toString(id)).child("TotScore").setValue(totScore + scores.get(pid.indexOf(id)));
 
 
                     }
@@ -144,7 +157,7 @@ public class UpdateScore {
                             int temp = Integer.parseInt(ds.child("Bat").child(Integer.toString(i)).child("PID").getValue().toString());
                             if(pid.contains(temp)){
                                 int sc = Integer.parseInt(ds.child("Bat").child(Integer.toString(i)).child("Score").getValue().toString());
-                                dref.child(uid).child("Bat").child(Integer.toString(i)).child("Score").setValue(scores.get(pid.indexOf(temp)));
+                                dref.child(uid).child("Bat").child(Integer.toString(i)).child("Score").setValue(sc + scores.get(pid.indexOf(temp)));
                                 score += scores.get(pid.indexOf(temp));
                             }
                         }
@@ -152,7 +165,7 @@ public class UpdateScore {
                             int temp = Integer.parseInt(ds.child("All").child(Integer.toString(i)).child("PID").getValue().toString());
                             if(pid.contains(temp)){
                                 int sc = Integer.parseInt(ds.child("All").child(Integer.toString(i)).child("Score").getValue().toString());
-                                dref.child(uid).child("All").child(Integer.toString(i)).child("Score").setValue(scores.get(pid.indexOf(temp)));
+                                dref.child(uid).child("All").child(Integer.toString(i)).child("Score").setValue(sc + scores.get(pid.indexOf(temp)));
                                 score += scores.get(pid.indexOf(temp));
                             }
                         }
@@ -160,7 +173,7 @@ public class UpdateScore {
                             int temp = Integer.parseInt(ds.child("Wkt").child(Integer.toString(i)).child("PID").getValue().toString());
                             if(pid.contains(temp)){
                                 int sc = Integer.parseInt(ds.child("Wkt").child(Integer.toString(i)).child("Score").getValue().toString());
-                                dref.child(uid).child("Wkt").child(Integer.toString(i)).child("Score").setValue(scores.get(pid.indexOf(temp)));
+                                dref.child(uid).child("Wkt").child(Integer.toString(i)).child("Score").setValue(sc + scores.get(pid.indexOf(temp)));
                                 score += scores.get(pid.indexOf(temp));
                             }
                         }
@@ -168,10 +181,11 @@ public class UpdateScore {
                             int temp = Integer.parseInt(ds.child("Bowl").child(Integer.toString(i)).child("PID").getValue().toString());
                             if(pid.contains(temp)){
                                 int sc = Integer.parseInt(ds.child("Bowl").child(Integer.toString(i)).child("Score").getValue().toString());
-                                dref.child(uid).child("Bowl").child(Integer.toString(i)).child("Score").setValue(scores.get(pid.indexOf(temp)));
+                                dref.child(uid).child("Bowl").child(Integer.toString(i)).child("Score").setValue(sc + scores.get(pid.indexOf(temp)));
                                 score += scores.get(pid.indexOf(temp));
                             }
                         }
+                        dref.child(uid).child("Scores").child(Integer.toString(mm)).setValue(score);
                     }
                 }
             }
@@ -191,7 +205,7 @@ public class UpdateScore {
             org.jsoup.nodes.Document doc;
             try {
                 s = "";
-                doc = Jsoup.connect("http://www.cricbuzz.com/api/html/cricket-scorecard/18998").get();
+                doc = Jsoup.connect("http://www.cricbuzz.com/api/html/cricket-scorecard/"+Integer.toString(19000+mm-2)).get();
                 Elements element = doc.getElementsByClass("cb-col cb-col-100 cb-scrd-itms");
 
                 for(int i=0;i<element.size();i++){

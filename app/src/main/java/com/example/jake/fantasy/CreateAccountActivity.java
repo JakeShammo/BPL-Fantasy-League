@@ -159,6 +159,10 @@ public class CreateAccountActivity extends AppCompatActivity implements
             password.setError("Required.");
             valid = false;
         }
+        else if(spassword.length()<6){
+            password.setError("Minimum 6 charecters.");
+            valid = false;
+        }
         else {
             password.setError(null);
         }

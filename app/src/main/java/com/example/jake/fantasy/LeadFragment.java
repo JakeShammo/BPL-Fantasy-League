@@ -1,5 +1,6 @@
 package com.example.jake.fantasy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,7 +38,7 @@ public class LeadFragment extends Fragment {
     ArrayList <Leaders> leaders;
     ListView listView1,listView2;
     ArrayList <Players> players;
-
+    String userId;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class LeadFragment extends Fragment {
         leaders = new ArrayList<>();
         players = new ArrayList<>();
         populateLeaders();
+        userId=getActivity().getIntent().getStringExtra("userId");
+
         return view;
 
     }
@@ -137,6 +141,11 @@ public class LeadFragment extends Fragment {
                 return o2.getTotScore()-o1.getTotScore();
             }
         });
+        for(int i=0;i<leaders.size();i++){
+            if(leaders.get(i).getUserId().equals(userId)){
+                dref.child("USERS").child(userId).child("Rank").setValue(i+1);
+            }
+        }
         CustopmAdapter custopmAdapter = new CustopmAdapter(1);
 
         //Log.d(TAG, Integer.toString(leaders.size()));
@@ -148,6 +157,26 @@ public class LeadFragment extends Fragment {
         listView2.setAdapter(custopmAdapter1);
         Utility.setListViewHeightBasedOnChildren(listView1);
         Utility.setListViewHeightBasedOnChildren(listView2);
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(getActivity(),PlayerStat.class);
+                startIntent.putExtra("PlayerId",Integer.toString(players.get(position).getId()));
+                //startIntent.putExtra("Money",Integer.toString(money));
+                startActivity(startIntent);
+            }
+        });
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent startIntent = new Intent(getActivity(),OtherTeams.class);
+                startIntent.putExtra("UserId",leaders.get(position).getUserId());
+                //startIntent.putExtra("Money",Integer.toString(money));
+                startActivity(startIntent);
+            }
+        });
     }
 
 

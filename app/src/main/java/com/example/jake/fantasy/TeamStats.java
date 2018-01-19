@@ -163,7 +163,7 @@ public class TeamStats extends AppCompatActivity {
                 barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
                 YAxis y = barChart.getAxisLeft();
                 y.setLabelCount(5);
-                y.setAxisMaximum(200);
+                y.setAxisMaximum(250);
                 y.setAxisMinimum(0);
                 YAxis rightYAxis = barChart.getAxisRight();
                 rightYAxis.setEnabled(false);

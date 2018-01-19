@@ -115,8 +115,8 @@ public class PlayerStat extends AppCompatActivity {
                 barData = new BarData(dataSet);
                 barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
                 YAxis y = barChart.getAxisLeft();
-                y.setLabelCount(4);
-                y.setAxisMaximum(100);
+                y.setLabelCount(5);
+                y.setAxisMaximum(150);
                 y.setAxisMinimum(0);
                 YAxis rightYAxis = barChart.getAxisRight();
                 rightYAxis.setEnabled(false);
@@ -208,7 +208,7 @@ public class PlayerStat extends AppCompatActivity {
                 float fsr ;
                 if(matcht != 0) favg = (float)runt/matcht;
                 else favg = 0;
-                if(ball!=0) fsr = ((float)(runt/ball))*100;
+                if(ball!=0) fsr = (((float)runt/ball))*100;
                 else fsr = 0;
 
                 vavgv.setText(String.format("%.1f", favg));

@@ -12,7 +12,7 @@
         tools:context="com.example.jake.fantasy.CreatingTeam1">
 
         <TextView
-            android:id="@+id/nameteam"
+            android:id="@+id/nameteam1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -22,7 +22,7 @@
             android:textColor="#000"/>
 
         <Button
-            android:id="@+id/viewStats"
+            android:id="@+id/viewStats1"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="280dp"
@@ -31,19 +31,10 @@
             android:background="@color/colorPrimaryDark"
             android:textColor="#FFF"
             android:textSize="18dp" />
-        <Button
-            android:id="@+id/editTeam"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="280dp"
-            android:text="Edit Team"
-            android:textSize="18dp"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="#FFF"/>
+
 
         <TextView
-            android:id="@+id/Motto"
+            android:id="@+id/Motto1"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
@@ -53,29 +44,19 @@
             android:textColor="#000"/>
 
         <TextView
-            android:id="@+id/points"
-            android:layout_width="wrap_content"
+            android:id="@+id/points1"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:layout_marginLeft="5dp"
             android:hint="Points"
             android:textSize="22dp"
             android:textColor="#000"/>
-        <TextView
-            android:id="@+id/ranks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/points"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="15dp"
-            android:hint="Points"
-            android:textSize="22dp"
-            android:textColor="#000"/>
 
 
 
         <TextView
-            android:id="@+id/bats"
+            android:id="@+id/bats1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
@@ -84,16 +65,16 @@
             android:textColor="#000"
             android:textSize="30dp" />
         <ListView
-            android:id="@+id/batList1"
+            android:id="@+id/batList2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="160dp"
             />
         <TextView
-            android:id="@+id/wkts"
+            android:id="@+id/wkts1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/batList1"
+            android:layout_below="@+id/batList2"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:textColor="#000"
@@ -101,48 +82,48 @@
             android:textSize="30dp" />
 
         <ListView
-            android:id="@+id/wktList1"
+            android:id="@+id/wktList2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/wkts"
+            android:layout_below="@+id/wkts1"
             android:layout_marginTop="10dp"
             />
 
 
         <TextView
-            android:id="@+id/alls"
+            android:id="@+id/alls1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/wktList1"
+            android:layout_below="@+id/wktList2"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:textColor="#000"
             android:text="AllRounders:"
             android:textSize="30dp" />
         <ListView
-            android:id="@+id/allList1"
+            android:id="@+id/allList2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alls"
+            android:layout_below="@+id/alls1"
             android:layout_marginTop="10dp"/>
 
 
 
         <TextView
-            android:id="@+id/bowl"
+            android:id="@+id/bowl1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/allList1"
+            android:layout_below="@+id/allList2"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:textColor="#000"
             android:text="Bowlers:"
             android:textSize="30dp" />
         <ListView
-            android:id="@+id/bowlList1"
+            android:id="@+id/bowlList2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/bowl"
+            android:layout_below="@+id/bowl1"
             android:layout_marginBottom="60dp"
             android:layout_marginTop="10dp"
             />
