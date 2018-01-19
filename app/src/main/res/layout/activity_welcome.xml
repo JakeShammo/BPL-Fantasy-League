@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,79 +11,61 @@
         android:id="@+id/imageView"
         android:layout_width="134dp"
         android:layout_height="84dp"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="135dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.327"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="270dp"
         app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/welL"
-        android:layout_width="162dp"
-        android:layout_height="72dp"
-        android:layout_marginEnd="113dp"
-        android:layout_marginStart="113dp"
-        android:layout_marginTop="356dp"
-        android:elegantTextHeight="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="380dp"
+        android:layout_centerHorizontal="true"
         android:text="LEAGUE"
         android:textColor="#FFF"
-        android:textSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="40dp" />
 
     <TextView
         android:id="@+id/welF"
-        android:layout_width="192dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="312dp"
-        android:elegantTextHeight="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:layout_centerHorizontal="true"
         android:text="FANTASY"
         android:textColor="#FFF"
-        android:textSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="40dp" />
 
     <TextView
         android:id="@+id/welcome"
-        android:layout_width="248dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="196dp"
-        android:elegantTextHeight="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:layout_centerHorizontal="true"
         android:text="Welcome To"
         android:textColor="#FFF"
-        android:textSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="40dp" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="260dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="56dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="480dp"
+        android:layout_centerHorizontal="true"
         android:background="@color/colorPrimaryDark"
         android:text="Create Your Team"
         android:textSize="25dp"
+        android:textColor="#FFF" />
+
+    <TextView
+        android:id="@+id/rules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="540dp"
+        android:layout_centerHorizontal="true"
+        android:text="View rules and regulations"
         android:textColor="#FFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="20dp"
+        android:clickable="true"/>
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

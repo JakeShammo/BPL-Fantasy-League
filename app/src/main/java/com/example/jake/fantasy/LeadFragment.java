@@ -58,7 +58,7 @@ public class LeadFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
+                leaders.clear();
                 for (DataSnapshot ds : dataSnapshot.child("USERS").getChildren()){
 
                     int total = Integer.parseInt(ds.child("TotalSelected").getValue().toString());

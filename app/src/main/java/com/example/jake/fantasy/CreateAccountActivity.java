@@ -28,7 +28,7 @@ public class CreateAccountActivity extends AppCompatActivity implements
 
 
     Button signIn;
-    EditText name,email,password;
+    EditText name,email,password,conpass;
     private FirebaseAuth mAuth;
     DatabaseReference dref;
     private static final String TAG = "EmailPassword";
@@ -47,6 +47,7 @@ public class CreateAccountActivity extends AppCompatActivity implements
         name = findViewById(R.id.nameinp);
         email = findViewById(R.id.emailinp);
         password = findViewById(R.id.passinp);
+        conpass = findViewById(R.id.conpassinp);
         signIn.setOnClickListener(this);
     }
 
@@ -60,7 +61,12 @@ public class CreateAccountActivity extends AppCompatActivity implements
         Log.d(TAG, "createUserWithEmail:ekhane ashlo");
         final String semail = email.getText().toString();
         final String spassword = password.getText().toString();
-
+        final  String scon = conpass.getText().toString();
+        if(!spassword.equals(scon)){
+            Toast.makeText(CreateAccountActivity.this, "Passwords do not match.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         showProgressDialog();
         Log.d(TAG, "createUserWithEmail:ekhane ashlo");

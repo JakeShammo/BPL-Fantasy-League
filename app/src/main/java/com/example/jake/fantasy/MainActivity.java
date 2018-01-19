@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
         mAuth = FirebaseAuth.getInstance();
         tv1 = findViewById(R.id.textView);
         tv2 = findViewById(R.id.textView2);
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         tv1.setTypeface(tf1);
         tv2.setTypeface(tf1);
-
+        UpdateScore updateScore = new UpdateScore();
+        updateScore.update();
         signIn = findViewById(R.id.button);
         createA = findViewById(R.id.button2);
         //signIn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //signIn.setBackgroundColor(Color.GRAY);
-                startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
+                startActivity(new Intent(MainActivity.this, WelcomeActiviy.class));
 
             }
         });
