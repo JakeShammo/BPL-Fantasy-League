@@ -67,6 +67,7 @@ public class FilterActivity extends AppCompatActivity {
                 startIntent.putExtra("Team",teamSpin.getText().toString());
                 startIntent.putExtra("MaxPrice",maxSpin.getText().toString());
                 startIntent.putExtra("MinPrice",minSpin.getText().toString());
+                startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 
                 startActivity(startIntent);

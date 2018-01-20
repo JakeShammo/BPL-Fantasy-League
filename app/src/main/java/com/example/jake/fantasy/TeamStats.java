@@ -73,7 +73,7 @@ public class TeamStats extends AppCompatActivity {
                 allno = Integer.parseInt(dataSnapshot.child("Allrounder").getValue().toString());
 
                 int teamScore = 0;
-                int maxScore = 0, minScore = 100000;
+                int maxScore = -1, minScore = 100000;
                 String minName ="",maxName="";
                 for(int i=0;i<batno;i++){
                     DataSnapshot ds = dataSnapshot.child("Bat").child(Integer.toString(i));

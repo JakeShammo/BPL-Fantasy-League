@@ -99,21 +99,29 @@ public class PlayerList extends AppCompatActivity {
         mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                int par2 = 0;
                 //Log.d(TAG, "Dhuke");
                 if(role.equals("Bat")) {
                     par = Integer.parseInt(dataSnapshot.child("USERS").child(userId).child("BatsmenSel").getValue().toString());
 
                 }
-                if(role.equals("Wkt"))
-                    par = Integer.parseInt( dataSnapshot.child("USERS").child(userId).child("WktKeeperSel").getValue().toString());
-                if(role.equals("Bowl"))
+                if(role.equals("Wkt")) {
+                    par = Integer.parseInt(dataSnapshot.child("USERS").child(userId).child("WktKeeperSel").getValue().toString());
+                    par2 = Integer.parseInt(dataSnapshot.child("USERS").child(userId).child("BatsmenSel").getValue().toString());
+                }
+                    if(role.equals("Bowl"))
                     par = Integer.parseInt( dataSnapshot.child("USERS").child(userId).child("BowlerSel").getValue().toString());
                 if(role.equals("All"))
                     par = Integer.parseInt( dataSnapshot.child("USERS").child(userId).child("AllrounderSel").getValue().toString());
                 for(int i=0;i<par;i++){
                     pids.add(Integer.parseInt(dataSnapshot.child("USERS").child(userId).child(role).child(Integer.toString(i)).child("PID").getValue().toString())+1);
-                    Log.d(TAG,Integer.toString(pids.get(i)));
+
+                }
+                if(role.equals("Wkt")){
+                    for(int i=0;i<par2;i++){
+                        pids.add(Integer.parseInt(dataSnapshot.child("USERS").child(userId).child("Bat").child(Integer.toString(i)).child("PID").getValue().toString())+1);
+
+                    }
                 }
                 userMon = Integer.parseInt( dataSnapshot.child("USERS").child(userId).child("Price").getValue().toString());
                 fore = Integer.parseInt( dataSnapshot.child("USERS").child(userId).child("Foreign").getValue().toString());

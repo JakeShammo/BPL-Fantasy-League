@@ -34,7 +34,7 @@ public class UpdateScore {
     ArrayList<Integer> Wkt = new ArrayList<>();
     DatabaseReference dref;
     ArrayList<Integer> scores = new ArrayList<>();
-    int mm = 9;
+    int mm = 10;
     public UpdateScore() {
     }
 
