@@ -61,6 +61,7 @@ public class FilterActivity extends AppCompatActivity {
                 startIntent.putExtra("One",one);
                 startIntent.putExtra("Position",posi);
                 startIntent.putExtra("Role",role);
+                Log.d("fil",coutSpin.getText().toString());
                 startIntent.putExtra("Country",coutSpin.getText().toString());
                 startIntent.putExtra("Name",name.getText().toString());
                 startIntent.putExtra("Team",teamSpin.getText().toString());

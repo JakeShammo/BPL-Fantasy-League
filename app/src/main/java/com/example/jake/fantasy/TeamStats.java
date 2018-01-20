@@ -1,5 +1,6 @@
 package com.example.jake.fantasy;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,8 @@ public class TeamStats extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_stats);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Team Stat");
         tmName = findViewById(R.id.nameteamS);
         tmMotto = findViewById(R.id.MottoS);
         userId= getIntent().getStringExtra("userId");

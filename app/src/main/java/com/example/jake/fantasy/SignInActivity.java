@@ -44,8 +44,8 @@ public class SignInActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.editText2);
         mAuth = FirebaseAuth.getInstance();
         signIn = findViewById(R.id.button3);
-        mEmailField.setText("iamjacobzz@outlook.com");
-        mPasswordField.setText("1234567");
+        //mEmailField.setText("iamjacobzz@outlook.com");
+        //mPasswordField.setText("1234567");
         signIn.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -2,6 +2,7 @@ package com.example.jake.fantasy;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
@@ -51,7 +52,7 @@ public class PlayerList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_list);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Creating Team");
+        actionBar.setTitle("Select Squad");
 
         Log.d(TAG,"vorse");
         role=getIntent().getStringExtra("Role");
@@ -72,6 +73,7 @@ public class PlayerList extends AppCompatActivity {
         showProgressDialog();
         populatePlayers();
         filter = findViewById(R.id.filterP);
+
         filter.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -121,6 +123,7 @@ public class PlayerList extends AppCompatActivity {
                     Players player = new Players();
                     player.setAge(Integer.parseInt((String) ds.child("Age").getValue()));
                     player.setCountry((String)ds.child("Country").getValue());
+                    //Log.d("cou", player.getCountry());
                     player.setName((String)ds.child("Name").getValue());
                     player.setRole((String)ds.child("Role").getValue());
                     player.setTeam((String)ds.child("Team").getValue());
@@ -154,7 +157,7 @@ public class PlayerList extends AppCompatActivity {
         for(int i=0;i<players.size();i++){
             Players p = players.get(i);
             if((role.equals("Any") || role.equals(p.getRole()) || (role.equals("Bat") && p.getRole().equals("Wkt"))) && (name.equals("Any") || p.getName().toLowerCase().contains(name.toLowerCase()))&&
-            (country.equals("Any") || country.equals(p.getCountry())) && (team.equals("Any") || p.getTeam().startsWith(team))
+            (country.equals("Any") || p.getCountry().toLowerCase().contains(country.toLowerCase())) && (team.equals("Any") || p.getTeam().startsWith(team))
                     && ((maxPrice.equals("Any") || p.getPrice()<=Integer.parseInt(maxPrice))) &&
                     ((minPrice.equals("Any") || p.getPrice()>=Integer.parseInt(minPrice))) && (!pids.contains(p.getId())))
                 filtered.add(p);
@@ -251,6 +254,20 @@ public class PlayerList extends AppCompatActivity {
             TextView team = view.findViewById(R.id.pTeam);
             TextView prices = view.findViewById(R.id.price);
             String url = filtered.get(i).getUrl();
+            TextView tv4 = view.findViewById(R.id.vstats);
+            tv4.setText("View Stats");
+            final int j = i;
+            tv4.setPaintFlags(tv4.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tv4.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent startIntent = new Intent(PlayerList.this,PlayerStat.class);
+                    startIntent.putExtra("PlayerId",Integer.toString(filtered.get(j).getId()-1));
+                    //startIntent.putExtra("Money",Integer.toString(money));
+                    startActivity(startIntent);
+                }
+            });
             loadimage(url,image);
             //image.setImageResource(R.drawable.anon);
             name.setText(filtered.get(i).getName());
@@ -289,7 +306,7 @@ public class PlayerList extends AppCompatActivity {
 
             mProgressDialog.setMessage("Generating Player List");
 
-                mProgressDialog.setMessage("Adding Player to the squad.");
+                //mProgressDialog.setMessage("Adding Player to the squad.");
             mProgressDialog.setIndeterminate(true);
 
         }

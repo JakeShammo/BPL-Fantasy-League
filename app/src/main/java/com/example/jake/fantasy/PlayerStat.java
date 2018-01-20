@@ -1,5 +1,6 @@
 package com.example.jake.fantasy;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,8 @@ public class PlayerStat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_stat);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Player Stat");
         listView = findViewById(R.id.statList);
         image = findViewById(R.id.playerpic);
         name = findViewById(R.id.statName);

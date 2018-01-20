@@ -14,6 +14,8 @@
         android:layout_marginTop="8dp"
         android:text="Fixtures"
         android:textSize="50dp" />
+
+
     <ListView
         android:id="@+id/matchList"
         android:layout_width="match_parent"
