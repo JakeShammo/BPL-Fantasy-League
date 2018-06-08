@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         tv1.setTypeface(tf1);
         tv2.setTypeface(tf1);
         showProgressDialog();
-        //UpdateScore updateScore = new UpdateScore();
-        //updateScore.update();
+        UpdateScore updateScore = new UpdateScore();
+        updateScore.update();
         hideProgressDialog();
         signIn = findViewById(R.id.button);
         createA = findViewById(R.id.button2);
